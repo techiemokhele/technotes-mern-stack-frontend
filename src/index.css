@@ -180,3 +180,46 @@ a:focus-visible {
   width: auto;
   height: auto;
 }
+
+/* Dashboard */
+.greeting-image {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.card-image {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100px;
+  position: relative;
+}
+
+.card-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: inherit;
+    transition: all 0.3s ease;
+}
+
+.card-image:hover::before {
+    transform: scale(1.05);
+}
+
+a.no-arrow, a.no-arrow:hover, a.no-arrow:focus, a.no-arrow:active {
+    text-decoration: none;
+}
+
+a.no-arrow::after, a.no-arrow:hover::after, a.no-arrow:focus::after, a.no-arrow:active::after {
+    display: none;
+}
+
+.card-image p {
+  position: relative;
+  z-index: 1;
+}

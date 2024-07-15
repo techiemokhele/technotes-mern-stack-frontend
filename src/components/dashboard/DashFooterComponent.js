@@ -1,34 +1,21 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faHouse } from "@fortawesome/free-solid-svg-icons"
-import { useNavigate, useLocation } from 'react-router-dom'
+import { FaUserTie } from "react-icons/fa";
+import { GrStatusGoodSmall } from "react-icons/gr";
+
 
 const DashFooterComponent = () => {
-
-    const navigate = useNavigate()
-    const { pathname } = useLocation()
-
-    const onGoHomeClicked = () => navigate('/dash')
-
-    let goHomeButton = null
-    if (pathname !== '/dash') {
-        goHomeButton = (
-            <button
-                className="dash-footer__button icon-button"
-                title="Home"
-                onClick={onGoHomeClicked}
-            >
-                <FontAwesomeIcon icon={faHouse} />
-            </button>
-        )
-    }
-
-    const content = (
-        <footer className="dash-footer">
-            {goHomeButton}
-            <p>Current User:</p>
-            <p>Status:</p>
+    return (
+        <footer className='flex flex-col w-full p-3 bg-gray-950'>
+            <div className="flex flex-row justify-between items-center h-10 px-6">
+                <div className="w-1/2 flex flex-row items-center gap-2">
+                    <FaUserTie className="text-white" />
+                    <p className="text-md capitalize">Current user: </p>
+                </div>
+                <div className="w-1/2 flex flex-row items-center gap-2 justify-end">
+                    <GrStatusGoodSmall className="text-white" />
+                    <p className="text-md capitalize">User status: </p>
+                </div>
+            </div>
         </footer>
     )
-    return content
 }
 export default DashFooterComponent

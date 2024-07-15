@@ -1,24 +1,66 @@
-import { Link } from 'react-router-dom'
 
-const Welcome = () => {
 
-    const date = new Date()
-    const today = new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'long' }).format(date)
+import DashboardActionComponent from "../../components/section/DashboardActionComponent";
+import DashboardBannerComponent from "../../components/section/DashboardBannerComponent";
 
-    const content = (
-        <section className="welcome">
+import { mechanicImage, notesImage, rolesImage, settingImage, viewNotesImage } from "../../data/imagesData";
 
-            <p>{today}</p>
 
-            <h1>Welcome!</h1>
+const WelcomePage = () => {
+    return (
+        <section className="welcome pt-10 md:pt-0 lg:pt-0">
+            <DashboardBannerComponent />
 
-            <p><Link to="/dash/notes">View techNotes</Link></p>
+            <div className="flex flex-row w-full gap-6">
+                <div className="w-1/2">
+                    <DashboardActionComponent
+                        title="Add note"
+                        description="Jot down ideas, make to-do lists"
+                        to={"/dash/notes"}
+                        backgroundImage={notesImage}
+                    />
+                </div>
 
-            <p><Link to="/dash/users">View User Settings</Link></p>
+                <div className="w-1/2">
+                    <DashboardActionComponent
+                        title="View Notes"
+                        description="See all of your notes"
+                        to={"/dash/notes"}
+                        backgroundImage={viewNotesImage}
+                    />
+                </div>
+            </div>
 
-        </section>
-    )
+            <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-3 w-full gap-4">
+                <div className="w-full">
+                    <DashboardActionComponent
+                        title="Employees"
+                        description="See list of registered users"
+                        to={"/dash/users"}
+                        backgroundImage={mechanicImage}
+                    />
+                </div>
 
-    return content
-}
-export default Welcome
+                <div className="w-full">
+                    <DashboardActionComponent
+                        title="User Roles"
+                        description="Manage all user roles"
+                        to={"/dash/users"}
+                        backgroundImage={rolesImage}
+                    />
+                </div>
+
+                <div className="w-full">
+                    <DashboardActionComponent
+                        title="Settings"
+                        description="Change platform settings"
+                        to={"/dash/users"}
+                        backgroundImage={settingImage}
+                    />
+                </div>
+            </div>
+        </section >
+    );
+};
+
+export default WelcomePage;
