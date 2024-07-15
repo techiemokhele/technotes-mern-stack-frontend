@@ -51,8 +51,8 @@ const DashHeaderComponent = () => {
                             </span>
                         </Link>
                     )}
-                    {links.company.map((link) => (
-                        <Link key={link.href} href={link.href}>
+                    {links.company.map((link, i) => (
+                        <Link key={i} href={link.href}>
                             <span className="px-3 py-2 rounded-md text-sm font-normal text-white hover:text-orange-500 cursor-pointer ">
                                 {link.label}
                             </span>
