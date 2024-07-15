@@ -182,26 +182,38 @@ a:focus-visible {
 }
 
 /* Dashboard */
-.promo-box {
-    background-image: url('https://images.unsplash.com/photo-1492892132812-a00a8b245c45?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    min-height: 100px;
-    position: relative;
+.card-image {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100px;
+  position: relative;
 }
 
-.promo-box::before {
-    content: "";
+.card-image::before {
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    border-radius: 0.375rem; 
+    background: inherit;
+    transition: all 0.3s ease;
 }
 
-.promo-box p {
-    position: relative;
-    z-index: 1;
+.card-image:hover::before {
+    transform: scale(1.05);
+}
+
+a.no-arrow, a.no-arrow:hover, a.no-arrow:focus, a.no-arrow:active {
+    text-decoration: none;
+}
+
+a.no-arrow::after, a.no-arrow:hover::after, a.no-arrow:focus::after, a.no-arrow:active::after {
+    display: none;
+}
+
+.card-image p {
+  position: relative;
+  z-index: 1;
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { WiDaySunny, WiNightClear, WiCloud, WiRain } from 'react-icons/wi';
+import { dashboardPromo } from '../../data/imagesData';
 
 const DashboardBannerComponent = () => {
     const [greeting, setGreeting] = useState('');
@@ -57,14 +58,18 @@ const DashboardBannerComponent = () => {
         getWeather();
     }, [getGreeting, getWeather]);
 
+    const backgroundStyle = {
+        backgroundImage: `url(${dashboardPromo})`,
+    };
+
     return (
         <section className="welcome">
             <div className="flex flex-row justify-between w-full gap-3">
-                <div className="flex flex-row justify-between w-full gap-1 bg-gray-800 rounded-md py-2 px-2">
+                <div className="flex flex-row items-center w-full bg-gray-800 rounded-md py-2 px-2">
                     <div>
                         <p className='text-md'>{greeting}, Alex!</p>
                         {weather && (
-                            <div className="flex items-center text-gray-500 text-sm">
+                            <div className="flex items-center text-gray-500 text-smi py-2">
                                 <span className={`${greeting === "Good Morning" ? "text-yellow-400" : greeting === "Good Afternoon" ? "text-orange-500" : "text-white"}`}>{weatherIcon}</span>
                                 <span className='ml-2'>
                                     {weather.main && weather.main.temp !== undefined
@@ -80,7 +85,8 @@ const DashboardBannerComponent = () => {
                     </div>
                 </div>
 
-                <div className="promo-box flex flex-col justify-center w-1/3 gap-1 rounded-md py-2 px-2 cursor-pointer">
+                <div className="card-image flex flex-col justify-center w-1/2 md:w-1/3 lg:w-1/3 gap-1 rounded-md py-2 px-2 cursor-pointer relative overflow-hidden group" style={backgroundStyle}>
+                    <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-all duration-300 group-hover:backdrop-blur-0"></div>
                     <p className='text-sm text-white'>Unlock the dashboard Pro!</p>
                     <p className='text-[10px] text-white'>Unlimited sessions, recordings, and many more!</p>
                 </div>
