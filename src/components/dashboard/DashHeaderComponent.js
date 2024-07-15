@@ -44,7 +44,7 @@ const DashHeaderComponent = () => {
         <>
             <header className='flex flex-row justify-between w-full py-3 bg-gray-950 px-6'>
                 <div className='flex flex-row justify-start items-center w-[25%]'>
-                    <Link to="/" className="text-md flex flex-row gap-1 items-center">
+                    <Link to="/dash" className="text-md flex flex-row gap-1 items-center">
                         <MdCarRepair size={24} className='text-orange-500' />
                         <h1 className='text-[12px] hidden sm:inline'>Neo M. Auto Repairs</h1>
                     </Link>
@@ -67,7 +67,9 @@ const DashHeaderComponent = () => {
 
                 <div className='hidden md:flex lg:flex flex-row justify-end items-center w-[25%] gap-2'>
                     <FaBell size={20} className='text-white cursor-pointer hover:text-orange-500' />
-                    <CiLogout size={20} className='text-white cursor-pointer hover:text-orange-500' />
+                    <Link to="/" asChild>
+                        <CiLogout size={20} className='text-white cursor-pointer hover:text-orange-500' />
+                    </Link>
                 </div>
             </header>
 
@@ -101,10 +103,10 @@ const DashHeaderComponent = () => {
                                 <p className="text-sm font-normal text-white hover:text-orange-500 cursor-pointer">Notifications</p>
                             </div>
 
-                            <div className='flex flex-row gap-2'>
+                            <Link to="/" className='flex flex-row gap-2'>
                                 <CiLogout size={20} className='text-white cursor-pointer hover:text-orange-500' />
                                 <p className="rounded-md text-sm font-normal text-white hover:text-orange-500 cursor-pointer">Logout</p>
-                            </div>
+                            </Link>
                         </div>
                     </div>
                 </div>

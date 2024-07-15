@@ -36,7 +36,7 @@ const WelcomePage = () => {
                     <DashboardActionComponent
                         title="Employees"
                         description="See list of registered users"
-                        to={"/dash/user"}
+                        to={"/dash/users"}
                         backgroundImage={mechanicImage}
                     />
                 </div>
@@ -45,7 +45,7 @@ const WelcomePage = () => {
                     <DashboardActionComponent
                         title="User Roles"
                         description="Manage all user roles"
-                        to={"/dash/user"}
+                        to={"/dash/users"}
                         backgroundImage={rolesImage}
                     />
                 </div>
@@ -54,7 +54,7 @@ const WelcomePage = () => {
                     <DashboardActionComponent
                         title="Settings"
                         description="Change platform settings"
-                        to={"/dash/user"}
+                        to={"/dash/users"}
                         backgroundImage={settingImage}
                     />
                 </div>
