@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { WiDaySunny, WiNightClear, WiCloud, WiRain } from 'react-icons/wi';
-import { dashboardPromo } from '../../data/imagesData';
+import { MdDashboard } from "react-icons/md";
+
+import { dashboardPromo, welcomeBanner } from '../../data/imagesData';
 
 const DashboardBannerComponent = () => {
     const [greeting, setGreeting] = useState('');
@@ -61,13 +63,16 @@ const DashboardBannerComponent = () => {
     const backgroundStyle = {
         backgroundImage: `url(${dashboardPromo})`,
     };
+    const welcomeStyle = {
+        backgroundImage: `url(${welcomeBanner})`,
+    };
 
     return (
         <section className="welcome">
             <div className="flex flex-row justify-between w-full gap-3">
-                <div className="flex flex-row items-center w-full bg-gray-800 rounded-md py-2 px-2">
+                <div style={welcomeStyle} className="greeting-image flex flex-row items-center w-full bg-gray-800 rounded-md py-2 px-2">
                     <div>
-                        <p className='text-md'>{greeting}, Alex!</p>
+                        <p className='text-sm md:text-xl lg:text-2xl font-bold'>{greeting}, Alex Smith!</p>
                         {weather && (
                             <div className="flex items-center text-gray-500 text-smi py-2">
                                 <span className={`${greeting === "Good Morning" ? "text-yellow-400" : greeting === "Good Afternoon" ? "text-orange-500" : "text-white"}`}>{weatherIcon}</span>
@@ -81,14 +86,15 @@ const DashboardBannerComponent = () => {
                                 </span>
                             </div>
                         )}
-                        <p className='text-xs text-gray-500'>{today}</p>
+                        <p className='text-xs text-white'>{today}</p>
                     </div>
                 </div>
 
                 <div className="card-image flex flex-col justify-center w-1/2 md:w-1/3 lg:w-1/3 gap-1 rounded-md py-2 px-2 cursor-pointer relative overflow-hidden group" style={backgroundStyle}>
                     <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-all duration-300 group-hover:backdrop-blur-0"></div>
-                    <p className='text-sm text-white'>Unlock the dashboard Pro!</p>
-                    <p className='text-[10px] text-white'>Unlimited sessions, recordings, and many more!</p>
+                    <MdDashboard className='text-orange-500 size-12 z-10 self-center' />
+                    <p className='text-xs md:text-lg lg:text-lg text-white text-center'>Unlock the dashboard Pro!</p>
+                    <p className='text-[8px] md:text-xs lg:text-xs text-white text-center'>Unlimited sessions, recordings, and many more!</p>
                 </div>
             </div>
         </section>

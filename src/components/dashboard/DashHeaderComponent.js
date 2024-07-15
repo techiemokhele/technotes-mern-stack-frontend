@@ -79,7 +79,7 @@ const DashHeaderComponent = () => {
             ></div>
 
             {/* Sidebar Navigation */}
-            <div ref={sidebarRef} className={`fixed top-0 left-0 w-64 h-full bg-gray-900 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out md:hidden z-50`}>
+            <div ref={sidebarRef} className={`fixed top-0 right-0 w-64 h-full bg-gray-900 transform ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full'} transition-transform duration-300 ease-in-out md:hidden z-50`}>
                 <div className='p-4'>
                     <Link to="/" className="text-md flex flex-row gap-1 items-center mb-6">
                         <MdCarRepair size={24} className='text-orange-500' />
