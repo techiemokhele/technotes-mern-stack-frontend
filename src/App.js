@@ -5,7 +5,7 @@ import Welcome from './features/auth/Welcome'
 
 import LayoutComponent from './components/LayoutComponent'
 import PublicComponent from './components/PublicComponent'
-import DashLayoutComponent from './components/DashLayoutComponent'
+import DashLayoutComponent from './components/dashboard/DashLayoutComponent'
 import NotesListComponent from './features/notes/NotesListComponent'
 import UsersListComponent from './features/users/UsersListComponent'
 
