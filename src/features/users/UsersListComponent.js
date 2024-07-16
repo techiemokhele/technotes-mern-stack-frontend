@@ -40,7 +40,7 @@ const UsersListComponent = () => {
                 </div>
 
 
-                <div className="flex flex-row justify-between gap-4 pb-6">
+                <div className="flex flex-row justify-between gap-4 pb-6 mx-6">
                     <CardCounterComponent
                         type="total"
                         count={ids.length}
@@ -55,11 +55,6 @@ const UsersListComponent = () => {
                         type="managerRole"
                         count={ids.length}
                         description="All active managers"
-                    />
-                    <CardCounterComponent
-                        type="shareholderRole"
-                        count={ids.length}
-                        description="All active shareholders"
                     />
                 </div>
 

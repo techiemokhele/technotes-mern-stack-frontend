@@ -6,17 +6,15 @@ const CardCounterComponent = ({ type, count, description }) => {
     const handleCardType = () => {
         switch (cardType) {
             case 'total':
-                return 'Total Count';
+                return 'Total';
             case 'statusOpen':
                 return 'Opened';
             case 'statusComplete':
                 return 'Completed';
             case 'employeeRole':
-                return 'Total Employee';
+                return 'Employees';
             case 'managerRole':
-                return 'Total Managers';
-            case 'shareholderRole':
-                return 'Total Shareholders';
+                return 'Managers';
             default:
                 return 'Total';
         }
@@ -33,8 +31,6 @@ const CardCounterComponent = ({ type, count, description }) => {
             case 'employeeRole':
                 return count;
             case 'managerRole':
-                return count;
-            case 'shareholderRole':
                 return count;
             default:
                 return count;
