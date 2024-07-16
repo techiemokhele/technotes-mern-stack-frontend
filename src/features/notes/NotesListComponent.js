@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useGetNotesQuery } from "./notesApiSlice";
 import Note from "./Note";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,6 +17,27 @@ const NotesListComponent = () => {
         error
     } = useGetNotesQuery();
 
+    const { totalNotes, openNotes, completedNotes } = useMemo(() => {
+        if (isSuccess) {
+            const { ids, entities } = notes;
+            let open = 0;
+            let completed = 0;
+            ids.forEach(id => {
+                if (entities[id].completed) {
+                    completed++;
+                } else {
+                    open++;
+                }
+            });
+            return {
+                totalNotes: ids.length,
+                openNotes: open,
+                completedNotes: completed
+            };
+        }
+        return { totalNotes: 0, openNotes: 0, completedNotes: 0 };
+    }, [isSuccess, notes]);
+
     if (isLoading) return <p className="text-center">Loading...</p>;
     if (isError) return <p className="text-center text-red-500">{error?.data?.message}</p>;
 
@@ -34,26 +55,25 @@ const NotesListComponent = () => {
         const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
         return (
-            <div className="flex flex-col">
+            <div className="flex flex-col container mx-auto max-w-full">
                 <div className='py-4'>
                     <h1 className="text-3xl">List of Notes</h1>
                 </div>
 
-                <div className="flex flex-row justify-between gap-2 pb-6">
+                <div className="grid grid-cols-3 gap-2 pb-6">
                     <CardCounterComponent
                         type="total"
-                        count={ids.length}
+                        count={totalNotes}
                         description="Total number of all notes"
                     />
-
                     <CardCounterComponent
                         type="statusOpen"
-                        count={ids.length}
+                        count={openNotes}
                         description="All active notes"
                     />
                     <CardCounterComponent
                         type="statusComplete"
-                        count={ids.length}
+                        count={completedNotes}
                         description="All active notes"
                     />
                 </div>

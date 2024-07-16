@@ -14,6 +14,8 @@ const Note = ({ noteId }) => {
         const updated = new Date(note.updatedAt).toLocaleString('en-US', { day: 'numeric', month: 'long' });
         const handleEdit = () => navigate(`/dash/notes/${noteId}`);
 
+        console.log(note.id)
+
         return (
             <tr className="hover:bg-gray-500">
                 <td className="px-6 py-4 whitespace-nowrap">
