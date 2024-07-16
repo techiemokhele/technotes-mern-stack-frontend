@@ -1,37 +1,33 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons"
-import { useNavigate } from 'react-router-dom'
-
-import { useSelector } from 'react-redux'
-import { selectUserById } from './usersApiSlice'
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectUserById } from './usersApiSlice';
 
 const User = ({ userId }) => {
-    const user = useSelector(state => selectUserById(state, userId))
-
-    const navigate = useNavigate()
+    const user = useSelector(state => selectUserById(state, userId));
+    const navigate = useNavigate();
 
     if (user) {
-        const handleEdit = () => navigate(`/dash/users/${userId}`)
-
-        const userRolesString = user.roles.toString().replaceAll(',', ', ')
-
-        const cellStatus = user.active ? '' : 'table__cell--inactive'
+        const handleEdit = () => navigate(`/dash/users/${userId}`);
+        const userRolesString = user.roles.toString().replaceAll(',', ', ');
 
         return (
-            <tr className="table__row user">
-                <td className={`table__cell ${cellStatus}`}>{user.username}</td>
-                <td className={`table__cell ${cellStatus}`}>{userRolesString}</td>
-                <td className={`table__cell ${cellStatus}`}>
+            <tr className={`hover:bg-gray-500 ${user.active ? '' : 'bg-gray-800'}`}>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{user.username}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-white">{userRolesString}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <button
-                        className="icon-button table__button"
+                        className="text-white hover:text-orange-500"
                         onClick={handleEdit}
                     >
                         <FontAwesomeIcon icon={faPenToSquare} />
                     </button>
                 </td>
             </tr>
-        )
-
-    } else return null
+        );
+    } else return null;
 }
-export default User
+
+export default User;
