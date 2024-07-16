@@ -3,6 +3,7 @@ import { useGetNotesQuery } from "./notesApiSlice";
 import Note from "./Note";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import CardCounterComponent from '../../components/constant/CardCounterComponent';
 
 const NotesListComponent = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -34,29 +35,53 @@ const NotesListComponent = () => {
 
         return (
             <div className="flex flex-col">
+                <div className='py-4'>
+                    <h1 className="text-3xl">List of Notes</h1>
+                </div>
+
+                <div className="flex flex-row justify-between gap-2 pb-6">
+                    <CardCounterComponent
+                        type="total"
+                        count={ids.length}
+                        description="Total number of all notes"
+                    />
+
+                    <CardCounterComponent
+                        type="statusOpen"
+                        count={ids.length}
+                        description="All active notes"
+                    />
+                    <CardCounterComponent
+                        type="statusComplete"
+                        count={ids.length}
+                        description="All active notes"
+                    />
+                </div>
+
                 <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                         <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                             <table className="min-w-full divide-y divide-gray-200">
-                                <thead className="bg-gray-50">
+                                <thead className="bg-gray-600">
                                     <tr>
-                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
-                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Updated</th>
-                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
-                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Owner</th>
+                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Status</th>
+                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Created</th>
+                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Updated</th>
+                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Title</th>
+                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Owner</th>
                                         <th scope="col" className="relative px-6 py-3">
                                             <span className="sr-only">Edit</span>
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody className="bg-white divide-y divide-gray-200">
+                                <tbody className="bg-gray-800 divide-y divide-gray-200">
                                     {tableContent}
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
+
                 {ids.length > itemsPerPage && (
                     <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
                         <div className="flex-1 flex justify-between sm:hidden">
@@ -75,6 +100,7 @@ const NotesListComponent = () => {
                                 Next
                             </button>
                         </div>
+
                         <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                             <div>
                                 <p className="text-sm text-gray-700">
@@ -96,10 +122,10 @@ const NotesListComponent = () => {
                                         <button
                                             key={number + 1}
                                             onClick={() => paginate(number + 1)}
-                                            className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium
+                                            className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium cursor-pointer
                                                 ${currentPage === number + 1
-                                                    ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
-                                                    : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                                                    ? 'z-10 bg-orange-900 border-orange-500 text-white'
+                                                    : 'bg-gray-800 border-gray-800 text-white'
                                                 }`}
                                         >
                                             {number + 1}

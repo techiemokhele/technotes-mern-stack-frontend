@@ -3,10 +3,11 @@ import { useGetUsersQuery } from "./usersApiSlice";
 import User from './User';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import CardCounterComponent from '../../components/constant/CardCounterComponent';
 
 const UsersListComponent = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 2;
+    const itemsPerPage = 10;
 
     const {
         data: users,
@@ -34,7 +35,33 @@ const UsersListComponent = () => {
 
         return (
             <div className="flex flex-col">
+                <div className='py-4'>
+                    <h1 className="text-3xl">List of Employees</h1>
+                </div>
 
+
+                <div className="flex flex-row justify-between gap-4 pb-6">
+                    <CardCounterComponent
+                        type="total"
+                        count={ids.length}
+                        description="Total number of all users"
+                    />
+                    <CardCounterComponent
+                        type="employeeRole"
+                        count={ids.length}
+                        description="All active employees"
+                    />
+                    <CardCounterComponent
+                        type="managerRole"
+                        count={ids.length}
+                        description="All active managers"
+                    />
+                    <CardCounterComponent
+                        type="shareholderRole"
+                        count={ids.length}
+                        description="All active shareholders"
+                    />
+                </div>
 
                 <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">

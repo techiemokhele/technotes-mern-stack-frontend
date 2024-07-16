@@ -15,7 +15,7 @@ const Note = ({ noteId }) => {
         const handleEdit = () => navigate(`/dash/notes/${noteId}`);
 
         return (
-            <tr className="hover:bg-gray-100">
+            <tr className="hover:bg-gray-500">
                 <td className="px-6 py-4 whitespace-nowrap">
                     {note.completed
                         ? <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
@@ -28,7 +28,7 @@ const Note = ({ noteId }) => {
                 <td className="px-6 py-4 whitespace-nowrap">{note.username}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <button
-                        className="text-indigo-600 hover:text-indigo-900"
+                        className="text-orange-500 hover:text-orange-800"
                         onClick={handleEdit}
                     >
                         <FontAwesomeIcon icon={faPenToSquare} />
