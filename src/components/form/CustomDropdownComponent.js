@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-const CustomDropdownComponent = ({ label, id, name, multiple, size, value, onChange, data, className }) => {
-    const [selectedOption, setSelectedOption] = useState("default");
+const CustomDropdownComponent = ({ label, id, name, value, onChange, data, className }) => {
+    const [selectedOption, setSelectedOption] = useState("Select an option");
     const [showOptions, setShowOptions] = useState(false);
 
     const handleClick = () => {
@@ -10,7 +10,7 @@ const CustomDropdownComponent = ({ label, id, name, multiple, size, value, onCha
 
     const handleChange = (e) => {
         const selectedValue = e.target.value;
-        if (selectedValue !== 'default') {
+        if (selectedValue !== 'Select an option') {
             setSelectedOption(selectedValue);
             setShowOptions(false);
         }
@@ -26,17 +26,15 @@ const CustomDropdownComponent = ({ label, id, name, multiple, size, value, onCha
                 id={id}
                 name={name}
                 className={`bg-gray-800 py-2 px-3 rounded-md focus:outline-none ${showOptions ? "h-28" : "h-10"} ${className}`}
-                multiple={multiple}
-                size={size}
                 value={selectedOption}
                 onClick={handleClick}
                 onChange={handleChange}
             >
-                <option value="default" className='text-gray-400 text-sm'>
-                    {selectedOption ? "Selected: " + selectedOption : ""}
+                <option value="Select an option" className='text-gray-400 text-sm'>
+                    {value ? data.find(item => item.value === value)?.label || value : "Select an option"}
                 </option>
 
-                {(showOptions || selectedOption === "default") && data.map((item, index) => (
+                {(showOptions || selectedOption === "Select an option") && data.map((item, index) => (
                     <option key={index} value={item.value} className='pt-2'>
                         {item.label}
                     </option>

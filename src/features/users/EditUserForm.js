@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons"
 import { ROLES } from "../../config/roles"
+import CustomTextInputComponent from "../../components/form/CustomTextInputComponent"
+import CustomDropdownComponent from "../../components/form/CustomDropdownComponent"
 
 const USER_REGEX = /^[A-z]{3,20}$/
 const PWD_REGEX = /^[A-z0-9!@#$%]{4,12}$/
@@ -76,15 +78,10 @@ const EditUserForm = ({ user }) => {
         await deleteUser({ id: user.id })
     }
 
-    const options = Object.values(ROLES).map(role => {
-        return (
-            <option
-                key={role}
-                value={role}
-
-            > {role}</option >
-        )
-    })
+    const options = Object.values(ROLES).map(role => ({
+        value: role,
+        label: role
+    }))
 
     let canSave
     if (password) {
@@ -100,85 +97,85 @@ const EditUserForm = ({ user }) => {
 
     const errContent = (error?.data?.message || delerror?.data?.message) ?? ''
 
+    return (
+        <section className="flex justify-center items-center">
+            <div className="w-full max-w-2xl px-4 py-2">
+                <form className="flex flex-col bg-orange-800 px-8 py-2 pb-4 rounded-lg shadow-lg" onSubmit={e => e.preventDefault()}>
+                    <p className={`${errClass} text-center mb-6`}>{errContent}</p>
 
-    const content = (
-        <>
-            <p className={errClass}>{errContent}</p>
+                    <div className="flex flex-col justify-between mb-6">
+                        <div className="flex justify-end items-center gap-4 pb-4">
+                            <button
+                                className="z-10"
+                                title="Save"
+                                onClick={onSaveUserClicked}
+                                disabled={!canSave}
+                            >
+                                <FontAwesomeIcon className="size-8 cursor-pointer" icon={faSave} />
+                            </button>
 
-            <form className="form" onSubmit={e => e.preventDefault()}>
-                <div className="form__title-row">
-                    <h2>Edit User</h2>
-                    <div className="form__action-buttons">
-                        <button
-                            className="icon-button"
-                            title="Save"
-                            onClick={onSaveUserClicked}
-                            disabled={!canSave}
-                        >
-                            <FontAwesomeIcon icon={faSave} />
-                        </button>
-                        <button
-                            className="icon-button"
-                            title="Delete"
-                            onClick={onDeleteUserClicked}
-                        >
-                            <FontAwesomeIcon icon={faTrashCan} />
-                        </button>
+                            <button
+                                className="z-10"
+                                title="Delete"
+                                onClick={onDeleteUserClicked}
+                            >
+                                <FontAwesomeIcon className="size-8 cursor-pointer" icon={faTrashCan} />
+                            </button>
+                        </div>
+
+                        <h2 className="text-2xl font-bold">Edit User</h2>
                     </div>
-                </div>
-                <label className="form__label" htmlFor="username">
-                    Username: <span className="nowrap">[3-20 letters]</span></label>
-                <input
-                    className={`form__input ${validUserClass}`}
-                    id="username"
-                    name="username"
-                    type="text"
-                    autoComplete="off"
-                    value={username}
-                    onChange={onUsernameChanged}
-                />
 
-                <label className="form__label" htmlFor="password">
-                    Password: <span className="nowrap">[empty = no change]</span> <span className="nowrap">[4-12 chars incl. !@#$%]</span></label>
-                <input
-                    className={`form__input ${validPwdClass}`}
-                    id="password"
-                    name="password"
-                    type="password"
-                    value={password}
-                    onChange={onPasswordChanged}
-                />
-
-                <label className="form__label form__checkbox-container" htmlFor="user-active">
-                    ACTIVE:
-                    <input
-                        className="form__checkbox"
-                        id="user-active"
-                        name="user-active"
-                        type="checkbox"
-                        checked={active}
-                        onChange={onActiveChanged}
+                    <CustomTextInputComponent
+                        id={username}
+                        label={"Username"}
+                        labelInfo={""}
+                        name={username}
+                        type={"text"}
+                        placeholder="John Smith"
+                        value={username}
+                        onChange={onUsernameChanged}
+                        className={`${validUserClass}`}
                     />
-                </label>
 
-                <label className="form__label" htmlFor="roles">
-                    ASSIGNED ROLES:</label>
-                <select
-                    id="roles"
-                    name="roles"
-                    className={`form__select ${validRolesClass}`}
-                    multiple={true}
-                    size="3"
-                    value={roles}
-                    onChange={onRolesChanged}
-                >
-                    {options}
-                </select>
+                    <CustomTextInputComponent
+                        id={password}
+                        label={"Password"}
+                        labelInfo={""}
+                        name={password}
+                        type={"password"}
+                        placeholder="●●●●●●●●"
+                        value={password}
+                        onChange={onPasswordChanged}
+                        className={`${validPwdClass}`}
+                    />
 
-            </form>
-        </>
+                    <CustomDropdownComponent
+                        id="roles"
+                        name="roles"
+                        label="Assigned roles"
+                        className={`${validRolesClass}`}
+                        value={roles}
+                        onChange={onRolesChanged}
+                        data={options}
+                    />
+
+                    <div className="flex flex-row items-center gap-4">
+                        <label className="pt-4" htmlFor="user-active">
+                            Remain Active:
+                        </label>
+                        <input
+                            className="size-4 mt-4"
+                            id="user-active"
+                            name="user-active"
+                            type="checkbox"
+                            checked={active}
+                            onChange={onActiveChanged}
+                        />
+                    </div>
+                </form>
+            </div>
+        </section>
     )
-
-    return content
 }
 export default EditUserForm

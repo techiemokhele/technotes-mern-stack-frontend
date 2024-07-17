@@ -3,6 +3,9 @@ import { useUpdateNoteMutation, useDeleteNoteMutation } from "./notesApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons"
+import CustomTextInputComponent from "../../components/form/CustomTextInputComponent"
+import CustomTextareaComponent from "../../components/form/CustomTextAreaComponent"
+import CustomDropdownComponent from "../../components/form/CustomDropdownComponent"
 
 const EditNoteForm = ({ note, users }) => {
 
@@ -57,15 +60,11 @@ const EditNoteForm = ({ note, users }) => {
     const created = new Date(note.createdAt).toLocaleString('en-US', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
     const updated = new Date(note.updatedAt).toLocaleString('en-US', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
 
-    const options = users.map(user => {
-        return (
-            <option
-                key={user.id}
-                value={user.id}
+    const options = users.map(user => ({
+        value: user.id,
+        label: user.username
+    }))
 
-            > {user.username}</option >
-        )
-    })
 
     const errClass = (isError || isDelError) ? "errmsg" : "offscreen"
     const validTitleClass = !title ? "form__input--incomplete" : ''
@@ -73,88 +72,96 @@ const EditNoteForm = ({ note, users }) => {
 
     const errContent = (error?.data?.message || delerror?.data?.message) ?? ''
 
-    const content = (
-        <>
-            <p className={errClass}>{errContent}</p>
+    return (
+        <section className="flex justify-center items-center">
+            <div className="w-full max-w-2xl px-4 py-2">
+                <form className="flex flex-col bg-orange-800 py-2 pb-4 px-8 rounded-lg shadow-lg" onSubmit={e => e.preventDefault()}>
+                    <p className={`${errClass} text-center mb-6`}>{errContent}</p>
 
-            <form className="form" onSubmit={e => e.preventDefault()}>
-                <div className="form__title-row">
-                    <h2>Edit Note #{note.ticket}</h2>
-                    <div className="form__action-buttons">
-                        <button
-                            className="icon-button"
-                            title="Save"
-                            onClick={onSaveNoteClicked}
-                            disabled={!canSave}
-                        >
-                            <FontAwesomeIcon icon={faSave} />
-                        </button>
-                        <button
-                            className="icon-button"
-                            title="Delete"
-                            onClick={onDeleteNoteClicked}
-                        >
-                            <FontAwesomeIcon icon={faTrashCan} />
-                        </button>
+                    <div className="flex flex-col justify-between mb-6">
+                        <div className="flex justify-end items-center gap-4 pb-4">
+                            <button
+                                className="z-10"
+                                title="Save"
+                                onClick={onSaveNoteClicked}
+                                disabled={!canSave}
+                            >
+                                <FontAwesomeIcon className="size-8 cursor-pointer" icon={faSave} />
+                            </button>
+
+                            <button
+                                className="z-10"
+                                title="Delete"
+                                onClick={onDeleteNoteClicked}
+                            >
+                                <FontAwesomeIcon className="size-8 cursor-pointer" icon={faTrashCan} />
+                            </button>
+                        </div>
+
+                        <h2 className="text-2xl font-bold">Edit Note:<br /> {note.title}</h2>
                     </div>
-                </div>
-                <label className="form__label" htmlFor="note-title">
-                    Title:</label>
-                <input
-                    className={`form__input ${validTitleClass}`}
-                    id="note-title"
-                    name="title"
-                    type="text"
-                    autoComplete="off"
-                    value={title}
-                    onChange={onTitleChanged}
-                />
 
-                <label className="form__label" htmlFor="note-text">
-                    Text:</label>
-                <textarea
-                    className={`form__input form__input--text ${validTextClass}`}
-                    id="note-text"
-                    name="text"
-                    value={text}
-                    onChange={onTextChanged}
-                />
-                <div className="form__row">
-                    <div className="form__divider">
-                        <label className="form__label form__checkbox-container" htmlFor="note-completed">
-                            WORK COMPLETE:
-                            <input
-                                className="form__checkbox"
-                                id="note-completed"
-                                name="completed"
-                                type="checkbox"
-                                checked={completed}
-                                onChange={onCompletedChanged}
-                            />
+                    <CustomTextInputComponent
+                        id={title}
+                        label={"Title"}
+                        labelInfo={""}
+                        name={title}
+                        type={"text"}
+                        placeholder="Fix invoice for December 2024"
+                        value={title}
+                        onChange={onTitleChanged}
+                        className={`${validTitleClass}`}
+                    />
+
+                    <CustomTextareaComponent
+                        id={text}
+                        label={"Note description"}
+                        labelInfo={""}
+                        name={text}
+                        type={"text"}
+                        placeholder="Write something about the note..."
+                        value={text}
+                        onChange={onTextChanged}
+                        className={`${validTextClass}`}
+                        rows={4}
+                    />
+
+                    <CustomDropdownComponent
+                        id="username"
+                        name="username"
+                        label="Assign to"
+                        value={userId}
+                        onChange={onUserIdChanged}
+                        data={options}
+                    />
+
+                    <div className="flex flex-row items-center gap-4">
+                        <label className="pt-4" htmlFor="user-active">
+                            Is the work completed:
                         </label>
+                        <input
+                            className="size-4 mt-4"
+                            id="user-active"
+                            name="user-active"
+                            type="checkbox"
+                            checked={completed}
+                            onChange={onCompletedChanged}
+                        />
+                    </div>
 
-                        <label className="form__label form__checkbox-container" htmlFor="note-username">
-                            ASSIGNED TO:</label>
-                        <select
-                            id="note-username"
-                            name="username"
-                            className="form__select"
-                            value={userId}
-                            onChange={onUserIdChanged}
-                        >
-                            {options}
-                        </select>
+                    <div className="flex flex-row justify-between w-full pt-4 gap-4">
+                        <div className="w-1/2 flex flex-col justify-center items-center gap-2 bg-gray-800 p-2 rounded-md">
+                            <p className="text-xs">Created:<br />{created}</p>
+                        </div>
+
+                        <div className="w-1/2 flex flex-col justify-center items-center gap-2 bg-gray-800 p-2 rounded-md">
+                            <p className="text-xs">Last Updated:<br />{updated}</p>
+                        </div>
                     </div>
-                    <div className="form__divider">
-                        <p className="form__created">Created:<br />{created}</p>
-                        <p className="form__updated">Updated:<br />{updated}</p>
-                    </div>
-                </div>
-            </form>
-        </>
+                </form>
+            </div>
+        </section>
     )
-
-    return content
 }
 
 export default EditNoteForm

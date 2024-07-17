@@ -3,9 +3,11 @@ import { useAddNewUserMutation } from "./usersApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave } from "@fortawesome/free-solid-svg-icons"
+
 import { ROLES } from "../../config/roles"
+
 import CustomTextInputComponent from "../../components/form/CustomTextInputComponent"
-import CustomDropdownComponent from "../../components/constant/CustomDropdownComponent"
+import CustomDropdownComponent from "../../components/form/CustomDropdownComponent"
 
 const USER_REGEX = /^[A-z]{3,20}$/
 const PWD_REGEX = /^[A-z0-9!@#$%]{4,12}$/
@@ -48,7 +50,7 @@ const NewUserForm = () => {
 
     const onRolesChanged = e => {
         const values = Array.from(
-            e.target.selectedOptions, //HTMLCollection 
+            e.target.selectedOptions,
             (option) => option.value
         )
         if (values.includes("default")) {
@@ -77,15 +79,14 @@ const NewUserForm = () => {
     const validPwdClass = !validPassword ? 'form__input--incomplete' : ''
     const validRolesClass = !Boolean(roles.length && !roles.includes("default")) ? 'form__input--incomplete' : ''
 
-
     return (
-        <section className="flex justify-center items-center min-h-[50vh]">
-            <div className="w-full max-w-2xl px-4 py-8">
-                <p className={`${errClass} text-center mb-4`}>{error?.data?.message}</p>
+        <section className="flex justify-center items-center">
+            <div className="w-full max-w-2xl px-4 py-2">
+                <form className="flex flex-col bg-orange-800 py-8 px-8 rounded-lg shadow-lg" onSubmit={onSaveUserClicked}>
+                    <p className={`${errClass} text-center mb-4`}>{error?.data?.message}</p>
 
-                <form className="flex flex-col bg-orange-800 py-12 px-8 rounded-lg shadow-lg" onSubmit={onSaveUserClicked}>
                     <div className="flex flex-row justify-between mb-6">
-                        <h2 className="text-4xl font-bold">New User</h2>
+                        <h2 className="text-4xl font-bold">Add New User</h2>
                         <div className="flex items-center px-4">
                             <button
                                 className="z-10"
@@ -122,7 +123,7 @@ const NewUserForm = () => {
                                 placeholder="●●●●●●●●"
                                 value={password}
                                 onChange={onPasswordChanged}
-                                className={`form__input ${validUserClass}`}
+                                className={`${validPwdClass}`}
                             />
                         </div>
                     </div>
@@ -132,8 +133,6 @@ const NewUserForm = () => {
                         name="roles"
                         label="Assigned roles"
                         className={`${validRolesClass}`}
-                        multiple={true}
-                        size="3"
                         value={roles}
                         onChange={onRolesChanged}
                         data={options}
