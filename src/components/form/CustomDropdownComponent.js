@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-const CustomDropdownComponent = ({ label, id, name, value, onChange, data, className }) => {
-    const [selectedOption, setSelectedOption] = useState("Select an option");
+const CustomDropdownComponent = ({ label, id, name, value, onChange, data, className, optionData }) => {
+    const [selectedOption, setSelectedOption] = useState(optionData);
     const [showOptions, setShowOptions] = useState(false);
 
     const handleClick = () => {
@@ -10,7 +10,7 @@ const CustomDropdownComponent = ({ label, id, name, value, onChange, data, class
 
     const handleChange = (e) => {
         const selectedValue = e.target.value;
-        if (selectedValue !== 'Select an option') {
+        if (selectedValue !== optionData) {
             setSelectedOption(selectedValue);
             setShowOptions(false);
         }
@@ -30,11 +30,11 @@ const CustomDropdownComponent = ({ label, id, name, value, onChange, data, class
                 onClick={handleClick}
                 onChange={handleChange}
             >
-                <option value="Select an option" className='text-gray-400 text-sm'>
-                    {value ? data.find(item => item.value === value)?.label || value : "Select an option"}
+                <option value={optionData} className='text-gray-400 text-sm'>
+                    {`${value ? data.find(item => item.value === value)?.label || value : optionData}`}
                 </option>
 
-                {(showOptions || selectedOption === "Select an option") && data.map((item, index) => (
+                {(showOptions || selectedOption === optionData) && data.map((item, index) => (
                     <option key={index} value={item.value} className='pt-2'>
                         {item.label}
                     </option>

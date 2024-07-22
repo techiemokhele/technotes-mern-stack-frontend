@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { useAddNewNoteMutation } from "./notesApiSlice"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave } from "@fortawesome/free-solid-svg-icons"
+
+import { useAddNewNoteMutation } from "./notesApiSlice"
 
 import CustomTextInputComponent from "../../components/form/CustomTextInputComponent"
 import CustomDropdownComponent from "../../components/form/CustomDropdownComponent"
@@ -13,7 +14,6 @@ const NewNoteForm = ({ users }) => {
     const [addNewNote, {
         isLoading,
         isSuccess,
-        isError,
         error
     }] = useAddNewNoteMutation()
 
@@ -22,6 +22,8 @@ const NewNoteForm = ({ users }) => {
     const [title, setTitle] = useState('')
     const [text, setText] = useState('')
     const [userId, setUserId] = useState(users[0]?.id || '')
+    const [showAlert, setShowAlert] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
 
     useEffect(() => {
         if (isSuccess) {
@@ -40,26 +42,49 @@ const NewNoteForm = ({ users }) => {
 
     const onSaveNoteClicked = async (e) => {
         e.preventDefault()
-        if (canSave) {
-            await addNewNote({ user: userId, title, text })
+        if (!title || !text || !userId) {
+            setErrorMessage('Please fill out all fields before submitting')
+            setShowAlert(true);
         }
+        else if (canSave) {
+            try {
+                const result = await addNewNote({ user: userId, title, text })
+                console.log('Notes API Response: ', result)
+            } catch (error) {
+                console.log('Notes API Error: ', error)
+                if (error?.data?.message === "Duplicate note created") {
+                    setErrorMessage('Duplicate note created')
+                } else {
+                    setErrorMessage(`${error?.data?.message || error.message || 'Failed to add new note'}`)
+                }
+                setShowAlert(true)
+            }
+        }
+        setTimeout(() => setShowAlert(false), 3000)
     }
 
+    useEffect(() => {
+        if (error) {
+            console.error('Mutation Error:', error)
+        }
+    }, [error])
+
     const options = users.map(user => ({
+        key: user.id,
         value: user.id,
         label: user.username
     }))
 
-    const errClass = isError ? "errmsg" : "offscreen"
-    const validTitleClass = !title ? "form__input--incomplete" : ''
-    const validTextClass = !text ? "form__input--incomplete" : ''
-
     return (
         <section className="flex justify-center items-center">
             <div className="w-full max-w-2xl px-4 py-2">
-                <form className="flex flex-col bg-orange-800 py-8 px-8 rounded-lg shadow-lg" onSubmit={onSaveNoteClicked}>
-                    <p className={`${errClass} text-center mb-4`}>{error?.data?.message}</p>
+                {showAlert && (
+                    <div className={` ${errorMessage ? "border-red-400 text-red-700 bg-red-100" : "border-green-400 text-green-700 bg-green-100"}  border px-4 py-3 rounded relative mb-4`} role="alert">
+                        <span className="block sm:inline">{errorMessage ? errorMessage : "Saving information..."}</span>
+                    </div>
+                )}
 
+                <form className="flex flex-col bg-orange-800 py-8 px-8 rounded-lg shadow-lg" onSubmit={onSaveNoteClicked}>
                     <div className="flex flex-row justify-between mb-6">
                         <h2 className="text-4xl font-bold">Add New Note</h2>
                         <div className="flex items-center px-4">
@@ -67,13 +92,13 @@ const NewNoteForm = ({ users }) => {
                                 type="submit"
                                 className="z-10"
                                 title="Save"
-                                disabled={!canSave}
                             >
                                 <FontAwesomeIcon className="size-8 cursor-pointer" icon={faSave} />
                             </button>
                         </div>
                     </div>
 
+                    {title && title.length < 2 && <p className="text-red-500 mb-2 text-xs px-2">Add more than 2 characters</p>}
                     <CustomTextInputComponent
                         id={title}
                         label={"Title"}
@@ -83,9 +108,10 @@ const NewNoteForm = ({ users }) => {
                         placeholder="Fix invoice for December 2024"
                         value={title}
                         onChange={onTitleChanged}
-                        className={`${validTitleClass}`}
+
                     />
 
+                    {text && text.length < 2 && <p className="text-red-500 mb-2 text-xs px-2">Add more than 2 characters</p>}
                     <CustomTextareaComponent
                         id={text}
                         label={"Note description"}
@@ -95,7 +121,6 @@ const NewNoteForm = ({ users }) => {
                         placeholder="Write something about the note..."
                         value={text}
                         onChange={onTextChanged}
-                        className={`${validTextClass}`}
                         rows={4}
                     />
 

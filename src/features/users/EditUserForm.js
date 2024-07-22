@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react"
-import { useUpdateUserMutation, useDeleteUserMutation } from "./usersApiSlice"
 import { useNavigate } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons"
 
+import { useUpdateUserMutation, useDeleteUserMutation } from "./usersApiSlice"
 import { ROLES } from "../../config/roles"
 import { USER_REGEX, PWD_REGEX } from "../../config/regex"
 
@@ -11,18 +11,14 @@ import CustomTextInputComponent from "../../components/form/CustomTextInputCompo
 import CustomDropdownComponent from "../../components/form/CustomDropdownComponent"
 
 const EditUserForm = ({ user }) => {
-
     const [updateUser, {
         isLoading,
         isSuccess,
-        isError,
         error
     }] = useUpdateUserMutation()
 
     const [deleteUser, {
         isSuccess: isDelSuccess,
-        isError: isDelError,
-        error: delerror
     }] = useDeleteUserMutation()
 
     const navigate = useNavigate()
@@ -33,6 +29,8 @@ const EditUserForm = ({ user }) => {
     const [validPassword, setValidPassword] = useState(false)
     const [roles, setRoles] = useState(user.roles)
     const [active, setActive] = useState(user.active)
+    const [showAlert, setShowAlert] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
 
     useEffect(() => {
         setValidUsername(USER_REGEX.test(username))
@@ -43,14 +41,12 @@ const EditUserForm = ({ user }) => {
     }, [password])
 
     useEffect(() => {
-        console.log(isSuccess)
         if (isSuccess || isDelSuccess) {
             setUsername('')
             setPassword('')
             setRoles([])
             navigate('/dash/users')
         }
-
     }, [isSuccess, isDelSuccess, navigate])
 
     const onUsernameChanged = e => setUsername(e.target.value)
@@ -67,18 +63,42 @@ const EditUserForm = ({ user }) => {
     const onActiveChanged = () => setActive(prev => !prev)
 
     const onSaveUserClicked = async (e) => {
-        if (password) {
-            await updateUser({ id: user.id, username, password, roles, active })
-        } else {
-            await updateUser({ id: user.id, username, roles, active })
+        e.preventDefault()
+        if (!validUsername || !validPassword) {
+            setErrorMessage('Please fill out all fields before submitting.')
+            setShowAlert(true)
+        } try {
+            if (password) {
+                const result = await updateUser({ id: user.id, username, password, roles, active })
+                console.log("Updated user response: ", result)
+            } else {
+                const result = await updateUser({ id: user.id, username, roles, active })
+                console.log("Updated user response: ", result)
+            }
+        } catch (error) {
+            console.log('Users Edit API Error: ', error)
+            if (error?.data?.message === 'Duplicate user') {
+                setErrorMessage('User already exists.')
+            } else {
+                setErrorMessage(`${error.data?.message || error.message || 'Failed to update user'}`)
+            }
+            setShowAlert(true)
         }
+        setTimeout(() => setShowAlert(false), 3000)
     }
 
     const onDeleteUserClicked = async () => {
         await deleteUser({ id: user.id })
     }
 
+    useEffect(() => {
+        if (error) {
+            console.error('Mutation Error:', error)
+        }
+    }, [error])
+
     const options = Object.values(ROLES).map(role => ({
+        key: role,
         value: role,
         label: role
     }))
@@ -90,71 +110,71 @@ const EditUserForm = ({ user }) => {
         canSave = [roles.length, validUsername].every(Boolean) && !isLoading
     }
 
-    const errClass = (isError || isDelError) ? "errmsg" : "offscreen"
-    const validUserClass = !validUsername ? 'form__input--incomplete' : ''
-    const validPwdClass = password && !validPassword ? 'form__input--incomplete' : ''
-    const validRolesClass = !Boolean(roles.length) ? 'form__input--incomplete' : ''
-
-    const errContent = (error?.data?.message || delerror?.data?.message) ?? ''
-
     return (
         <section className="flex justify-center items-center">
             <div className="w-full max-w-2xl px-4 py-2">
-                <form className="flex flex-col bg-orange-800 px-8 py-2 pb-4 rounded-lg shadow-lg" onSubmit={e => e.preventDefault()}>
-                    <p className={`${errClass} text-center mb-6`}>{errContent}</p>
+                {showAlert && (
+                    <div className={` ${errorMessage ? "border-red-400 text-red-700 bg-red-100" : "border-green-400 text-green-700 bg-green-100"}  border px-4 py-3 rounded relative mb-4`} role="alert">
+                        <span className="block sm:inline">{errorMessage ? errorMessage : "Saving information..."}</span>
+                    </div>
+                )}
 
+                <form className="flex flex-col bg-orange-800 px-8 py-2 pb-4 rounded-lg shadow-lg" onSubmit={e => e.preventDefault()}>
                     <div className="flex flex-col justify-between mb-6">
-                        <div className="flex justify-end items-center gap-4 pb-4">
+                        <div className="flex justify-end items-center gap-4 py-4">
                             <button
-                                className="z-10"
+                                type="submit"
+                                className="z-10 text-white"
                                 title="Save"
                                 onClick={onSaveUserClicked}
                                 disabled={!canSave}
                             >
-                                <FontAwesomeIcon className="size-8 cursor-pointer" icon={faSave} />
+                                <FontAwesomeIcon className="h-8 w-8 cursor-pointer" icon={faSave} />
                             </button>
 
                             <button
-                                className="z-10"
+                                type="button"
+                                className="z-10 text-white"
                                 title="Delete"
                                 onClick={onDeleteUserClicked}
                             >
-                                <FontAwesomeIcon className="size-8 cursor-pointer" icon={faTrashCan} />
+                                <FontAwesomeIcon className="h-8 w-8 cursor-pointer" icon={faTrashCan} />
                             </button>
                         </div>
 
                         <h2 className="text-2xl font-bold">Edit User</h2>
                     </div>
 
+                    {!validUsername && <p className="text-red-500 mb-2 text-xs px-2">Required, no spaces & symbols</p>}
                     <CustomTextInputComponent
-                        id={username}
-                        label={"Username"}
-                        labelInfo={""}
-                        name={username}
-                        type={"text"}
-                        placeholder="John Smith"
+                        id="username"
+                        label="Username"
+                        labelInfo=""
+                        name="username"
+                        type="text"
+                        placeholder="John"
                         value={username}
                         onChange={onUsernameChanged}
-                        className={`${validUserClass}`}
                     />
 
+                    {!password.length === 0 && !validPassword && <p className="text-red-500 mb-2 text-xs px-2">Password needs to be 4 - 12 characters</p>}
                     <CustomTextInputComponent
-                        id={password}
-                        label={"Password"}
-                        labelInfo={""}
-                        name={password}
-                        type={"password"}
+                        id="password"
+                        label="Password"
+                        labelInfo=""
+                        name="password"
+                        type="password"
                         placeholder="●●●●●●●●"
                         value={password}
                         onChange={onPasswordChanged}
-                        className={`${validPwdClass}`}
                     />
 
+                    {!roles.length && <p className="text-red-500 mb-2 text-xs px-2">At least one role must be selected.</p>}
                     <CustomDropdownComponent
                         id="roles"
                         name="roles"
                         label="Assigned roles"
-                        className={`${validRolesClass}`}
+                        className={`mb-4 ${!roles.length && 'border-red-500'}`}
                         value={roles}
                         onChange={onRolesChanged}
                         data={options}
@@ -178,4 +198,5 @@ const EditUserForm = ({ user }) => {
         </section>
     )
 }
+
 export default EditUserForm

@@ -7,11 +7,11 @@ import User from './User';
 
 import CardCounterComponent from '../../components/constant/CardCounterComponent';
 import NoContentFoundComponent from '../../components/constant/NoContentFoundComponent';
-
+import LoadingContentComponent from '../../components/constant/LoadingContentComponent';
 
 const UsersListComponent = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
+    const itemsPerPage = 8;
 
     const {
         data: users,
@@ -21,7 +21,7 @@ const UsersListComponent = () => {
         error
     } = useGetUsersQuery();
 
-    if (isLoading) return <p className="text-center">Loading...</p>;
+    if (isLoading) return <LoadingContentComponent />;
     if (isError) return <p className="text-center text-red-500">{error?.data?.message}</p>;
 
     if (isSuccess) {
@@ -49,7 +49,7 @@ const UsersListComponent = () => {
                     <CardCounterComponent
                         type="total"
                         count={ids.length}
-                        description="Total number of all users"
+                        description="Total members"
                     />
                     <CardCounterComponent
                         type="employeeRole"
@@ -152,7 +152,7 @@ const UsersListComponent = () => {
         );
     }
 
-    return null;
+    return <NoContentFoundComponent />;
 }
 
 export default UsersListComponent;

@@ -1,25 +1,22 @@
 import { useState, useEffect } from "react"
-import { useUpdateNoteMutation, useDeleteNoteMutation } from "./notesApiSlice"
 import { useNavigate } from "react-router-dom"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons"
+
+import { useUpdateNoteMutation, useDeleteNoteMutation } from "./notesApiSlice"
 import CustomTextInputComponent from "../../components/form/CustomTextInputComponent"
 import CustomTextareaComponent from "../../components/form/CustomTextAreaComponent"
 import CustomDropdownComponent from "../../components/form/CustomDropdownComponent"
 
 const EditNoteForm = ({ note, users }) => {
-
     const [updateNote, {
         isLoading,
         isSuccess,
-        isError,
         error
     }] = useUpdateNoteMutation()
 
     const [deleteNote, {
         isSuccess: isDelSuccess,
-        isError: isDelError,
-        error: delerror
     }] = useDeleteNoteMutation()
 
     const navigate = useNavigate()
@@ -28,16 +25,16 @@ const EditNoteForm = ({ note, users }) => {
     const [text, setText] = useState(note.text)
     const [completed, setCompleted] = useState(note.completed)
     const [userId, setUserId] = useState(note.user)
+    const [showAlert, setShowAlert] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
 
     useEffect(() => {
-
         if (isSuccess || isDelSuccess) {
             setTitle('')
             setText('')
             setUserId('')
             navigate('/dash/notes')
         }
-
     }, [isSuccess, isDelSuccess, navigate])
 
     const onTitleChanged = e => setTitle(e.target.value)
@@ -48,14 +45,36 @@ const EditNoteForm = ({ note, users }) => {
     const canSave = [title, text, userId].every(Boolean) && !isLoading
 
     const onSaveNoteClicked = async (e) => {
-        if (canSave) {
-            await updateNote({ id: note.id, user: userId, title, text, completed })
+        e.preventDefault()
+        if (!title || !text) {
+            setErrorMessage('Please fill out all fields before submitting.')
+            setShowAlert(true)
+        } else if (canSave) {
+            try {
+                const result = await updateNote({ id: note.id, user: userId, title, text, completed })
+                console.log("Updated note response: ", result)
+            } catch (error) {
+                console.log('Notes Edit API Error: ', error)
+                if (error?.data?.message === 'Duplicate note') {
+                    setErrorMessage('Note already exists.')
+                } else {
+                    setErrorMessage(`${error.data?.message || error.message || 'Failed to update note'}`)
+                }
+                setShowAlert(true)
+            }
         }
+        setTimeout(() => setShowAlert(false), 3000)
     }
 
     const onDeleteNoteClicked = async () => {
         await deleteNote({ id: note.id })
     }
+
+    useEffect(() => {
+        if (error) {
+            console.error('Mutation Error:', error)
+        }
+    }, [error])
 
     const created = new Date(note.createdAt).toLocaleString('en-US', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
     const updated = new Date(note.updatedAt).toLocaleString('en-US', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
@@ -66,25 +85,21 @@ const EditNoteForm = ({ note, users }) => {
     }))
 
 
-    const errClass = (isError || isDelError) ? "errmsg" : "offscreen"
-    const validTitleClass = !title ? "form__input--incomplete" : ''
-    const validTextClass = !text ? "form__input--incomplete" : ''
-
-    const errContent = (error?.data?.message || delerror?.data?.message) ?? ''
-
     return (
         <section className="flex justify-center items-center">
             <div className="w-full max-w-2xl px-4 py-2">
+                {showAlert && (
+                    <div className={` ${errorMessage ? "border-red-400 text-red-700 bg-red-100" : "border-green-400 text-green-700 bg-green-100"}  border px-4 py-3 rounded relative mb-4`} role="alert">
+                        <span className="block sm:inline">{errorMessage ? errorMessage : "Saving information..."}</span>
+                    </div>
+                )}
                 <form className="flex flex-col bg-orange-800 py-2 pb-4 px-8 rounded-lg shadow-lg" onSubmit={e => e.preventDefault()}>
-                    <p className={`${errClass} text-center mb-6`}>{errContent}</p>
-
                     <div className="flex flex-col justify-between mb-6">
                         <div className="flex justify-end items-center gap-4 pb-4">
                             <button
                                 className="z-10"
                                 title="Save"
                                 onClick={onSaveNoteClicked}
-                                disabled={!canSave}
                             >
                                 <FontAwesomeIcon className="size-8 cursor-pointer" icon={faSave} />
                             </button>
@@ -101,6 +116,7 @@ const EditNoteForm = ({ note, users }) => {
                         <h2 className="text-2xl font-bold">Edit Note:<br /> {note.title}</h2>
                     </div>
 
+                    {title.length < 2 && <p className="text-red-500 mb-2 text-xs px-2">Add more than 2 characters</p>}
                     <CustomTextInputComponent
                         id={title}
                         label={"Title"}
@@ -110,9 +126,9 @@ const EditNoteForm = ({ note, users }) => {
                         placeholder="Fix invoice for December 2024"
                         value={title}
                         onChange={onTitleChanged}
-                        className={`${validTitleClass}`}
                     />
 
+                    {text.length < 2 && <p className="text-red-500 mb-2 text-xs px-2">Add more than 2 characters</p>}
                     <CustomTextareaComponent
                         id={text}
                         label={"Note description"}
@@ -122,7 +138,6 @@ const EditNoteForm = ({ note, users }) => {
                         placeholder="Write something about the note..."
                         value={text}
                         onChange={onTextChanged}
-                        className={`${validTextClass}`}
                         rows={4}
                     />
 
