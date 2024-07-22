@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 
-import Login from './features/auth/Login';
+import Login from './features/auth/Login'
 import Prefetch from './features/auth/Prefetch'
 import Welcome from './features/auth/Welcome'
 

@@ -63,10 +63,10 @@ const CardCounterComponent = ({ type, count, description }) => {
     return (
         <div className="greeting-image flex flex-col w-full rounded-md py-2 px-6 gap-3 bg-gray-800" style={welcomeStyle}>
             <p className="text-white font-bold text-3xl">{handleCardCount()}</p>
-            <di className="flex flex-col">
+            <div className="flex flex-col">
                 <p className="text-white font-bold">{handleCardType()}</p>
                 <p className="text-white text-[10px] font-normal">{description}</p>
-            </di>
+            </div>
         </div>
     )
 }

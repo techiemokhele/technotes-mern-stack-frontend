@@ -73,7 +73,7 @@ const DashHeaderComponent = () => {
 
                 <div className='hidden md:flex lg:flex flex-row justify-end items-center w-[25%] gap-2'>
                     <FaBell size={20} className='text-white cursor-pointer hover:text-orange-800' />
-                    <Link to="/" asChild>
+                    <Link to="/">
                         <CiLogout size={20} className='text-white cursor-pointer hover:text-orange-800' />
                     </Link>
                 </div>

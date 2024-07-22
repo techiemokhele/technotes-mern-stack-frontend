@@ -64,6 +64,7 @@ const NewNoteForm = ({ users }) => {
                         <h2 className="text-4xl font-bold">Add New Note</h2>
                         <div className="flex items-center px-4">
                             <button
+                                type="submit"
                                 className="z-10"
                                 title="Save"
                                 disabled={!canSave}

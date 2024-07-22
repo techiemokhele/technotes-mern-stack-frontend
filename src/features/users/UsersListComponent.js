@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import { useGetUsersQuery } from "./usersApiSlice";
-import User from './User';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+
+import { useGetUsersQuery } from "./usersApiSlice";
+import User from './User';
+
 import CardCounterComponent from '../../components/constant/CardCounterComponent';
+import NoContentFoundComponent from '../../components/constant/NoContentFoundComponent';
+
 
 const UsersListComponent = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -22,14 +26,16 @@ const UsersListComponent = () => {
 
     if (isSuccess) {
         const { ids } = users;
-        const totalPages = Math.ceil(ids.length / itemsPerPage);
+        const reversedIds = [...ids].reverse();
+
+        const totalPages = Math.ceil(reversedIds.length / itemsPerPage);
         const indexOfLastItem = currentPage * itemsPerPage;
         const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-        const currentItems = ids.slice(indexOfFirstItem, indexOfLastItem);
+        const currentItems = reversedIds.slice(indexOfFirstItem, indexOfLastItem);
 
         const tableContent = currentItems.length
             ? currentItems.map(userId => <User key={userId} userId={userId} />)
-            : null;
+            : <NoContentFoundComponent />;
 
         const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -38,7 +44,6 @@ const UsersListComponent = () => {
                 <div className='py-4'>
                     <h1 className="text-3xl">List of Employees</h1>
                 </div>
-
 
                 <div className="flex flex-row justify-between gap-4 pb-6 mx-6">
                     <CardCounterComponent
