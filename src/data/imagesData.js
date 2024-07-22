@@ -6,6 +6,11 @@ const mechanicImage = "https://images.unsplash.com/photo-1517524206127-48bbd363f
 const dashboardPromo = "https://images.unsplash.com/photo-1518280241376-e0c321a3b9c8?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 const welcomeBanner = "https://images.unsplash.com/photo-1586348943529-beaae6c28db9?q=80&w=1315&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
+const openImage = require('../img/open-bg.png')
+const totalImage = require('../img/total-bg.png')
+const userImage = require('../img/user-bg.png')
+
+
 export {
     notesImage,
     settingImage,
@@ -13,5 +18,8 @@ export {
     rolesImage,
     mechanicImage,
     dashboardPromo,
-    welcomeBanner
+    welcomeBanner,
+    openImage,
+    totalImage,
+    userImage
 }
