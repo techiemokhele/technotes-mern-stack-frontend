@@ -1,9 +1,12 @@
 import React, { useMemo, useState } from 'react';
-import { useGetNotesQuery } from "./notesApiSlice";
-import Note from "./Note";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+
+import { useGetNotesQuery } from "./notesApiSlice";
+import Note from "./Note";
 import CardCounterComponent from '../../components/constant/CardCounterComponent';
+import LoadingContentComponent from '../../components/constant/LoadingContentComponent';
+import NoContentFoundComponent from '../../components/constant/NoContentFoundComponent';
 
 const NotesListComponent = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -15,7 +18,11 @@ const NotesListComponent = () => {
         isSuccess,
         isError,
         error
-    } = useGetNotesQuery();
+    } = useGetNotesQuery(undefined, {
+        pollingInterval: 15000,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true
+    });
 
     const { totalNotes, openNotes, completedNotes } = useMemo(() => {
         if (isSuccess) {
@@ -38,7 +45,7 @@ const NotesListComponent = () => {
         return { totalNotes: 0, openNotes: 0, completedNotes: 0 };
     }, [isSuccess, notes]);
 
-    if (isLoading) return <p className="text-center">Loading...</p>;
+    if (isLoading) return <LoadingContentComponent />;
     if (isError) return <p className="text-center text-red-500">{error?.data?.message}</p>;
 
     if (isSuccess) {
@@ -50,7 +57,7 @@ const NotesListComponent = () => {
 
         const tableContent = currentItems.length
             ? currentItems.map(noteId => <Note key={noteId} noteId={noteId} />)
-            : null;
+            : <NoContentFoundComponent />;
 
         const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -74,7 +81,7 @@ const NotesListComponent = () => {
                     <CardCounterComponent
                         type="statusComplete"
                         count={completedNotes}
-                        description="All active notes"
+                        description="All completed notes"
                     />
                 </div>
 
@@ -168,7 +175,7 @@ const NotesListComponent = () => {
         );
     }
 
-    return null;
+    return <NoContentFoundComponent />;
 }
 
 export default NotesListComponent;

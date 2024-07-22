@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
-import { useGetUsersQuery } from "./usersApiSlice";
-import User from './User';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+
+import { useGetUsersQuery } from "./usersApiSlice";
+import User from './User';
+
 import CardCounterComponent from '../../components/constant/CardCounterComponent';
+import NoContentFoundComponent from '../../components/constant/NoContentFoundComponent';
+import LoadingContentComponent from '../../components/constant/LoadingContentComponent';
 
 const UsersListComponent = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
+    const itemsPerPage = 8;
 
     const {
         data: users,
@@ -15,21 +19,27 @@ const UsersListComponent = () => {
         isSuccess,
         isError,
         error
-    } = useGetUsersQuery();
+    } = useGetUsersQuery(undefined, {
+        pollingInterval: 60000,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true
+    });
 
-    if (isLoading) return <p className="text-center">Loading...</p>;
+    if (isLoading) return <LoadingContentComponent />;
     if (isError) return <p className="text-center text-red-500">{error?.data?.message}</p>;
 
     if (isSuccess) {
         const { ids } = users;
-        const totalPages = Math.ceil(ids.length / itemsPerPage);
+        const reversedIds = [...ids].reverse();
+
+        const totalPages = Math.ceil(reversedIds.length / itemsPerPage);
         const indexOfLastItem = currentPage * itemsPerPage;
         const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-        const currentItems = ids.slice(indexOfFirstItem, indexOfLastItem);
+        const currentItems = reversedIds.slice(indexOfFirstItem, indexOfLastItem);
 
         const tableContent = currentItems.length
             ? currentItems.map(userId => <User key={userId} userId={userId} />)
-            : null;
+            : <NoContentFoundComponent />;
 
         const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -39,12 +49,11 @@ const UsersListComponent = () => {
                     <h1 className="text-3xl">List of Employees</h1>
                 </div>
 
-
-                <div className="flex flex-row justify-between gap-4 pb-6">
+                <div className="flex flex-row justify-between gap-4 pb-6 mx-6">
                     <CardCounterComponent
                         type="total"
                         count={ids.length}
-                        description="Total number of all users"
+                        description="Total members"
                     />
                     <CardCounterComponent
                         type="employeeRole"
@@ -55,11 +64,6 @@ const UsersListComponent = () => {
                         type="managerRole"
                         count={ids.length}
                         description="All active managers"
-                    />
-                    <CardCounterComponent
-                        type="shareholderRole"
-                        count={ids.length}
-                        description="All active shareholders"
                     />
                 </div>
 
@@ -152,7 +156,7 @@ const UsersListComponent = () => {
         );
     }
 
-    return null;
+    return <NoContentFoundComponent />;
 }
 
 export default UsersListComponent;

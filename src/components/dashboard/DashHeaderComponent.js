@@ -3,14 +3,16 @@ import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { MdCarRepair } from "react-icons/md";
-import { FaBell } from "react-icons/fa";
 import { CiLogout } from "react-icons/ci";
+import { FaBell, FaHome, FaPlusCircle, FaClipboardList, FaUserPlus, FaUsers, FaCog } from 'react-icons/fa';
 
 const links = {
     company: [
-        { href: "#", label: "Create Note" },
-        { href: "#", label: "View Notes" },
-        { href: "#", label: "Settings" },
+        { href: "/dash/notes/new", label: "Add Note", icon: <FaPlusCircle size={20} className='mr-2' /> },
+        { href: "/dash/notes", label: "View Notes", icon: <FaClipboardList size={20} className='mr-2' /> },
+        { href: "/dash/users/new", label: "Add User", icon: <FaUserPlus size={20} className='mr-2' /> },
+        { href: "/dash/users", label: "View Users", icon: <FaUsers size={20} className='mr-2' /> },
+        { href: "#", label: "Settings", icon: <FaCog size={20} className='mr-2' /> },
     ],
 };
 
@@ -33,8 +35,8 @@ const DashHeaderComponent = () => {
     }, []);
 
     const onGoHomeClicked = () => (
-        <Link to="/dash" className="px-3 py-2 rounded-md text-sm font-normal text-white hover:text-orange-500 cursor-pointer">
-            Home
+        <Link to="/dash" className="flex flex-row px-1 py-2 rounded-md text-sm font-normal text-white hover:text-orange-800 cursor-pointer">
+            <FaHome size={20} className='mr-2 flex flex-row md:hidden lg:hidden' /> Home
         </Link>
     );
 
@@ -54,7 +56,11 @@ const DashHeaderComponent = () => {
                 <nav className='hidden md:flex flex-row justify-center items-center w-[50%]'>
                     {goHomeButton}
                     {links.company.map((link, i) => (
-                        <Link key={i} to={link.href} className="px-3 py-2 rounded-md text-sm font-normal text-white hover:text-orange-500 cursor-pointer">
+                        <Link
+                            key={i}
+                            to={link.href}
+                            className={`px-3 py-2 rounded-md text-sm font-normal text-white ${pathname === link.href ? 'text-orange-500' : ''} hover:text-orange-800 cursor-pointer`}
+                        >
                             {link.label}
                         </Link>
                     ))}
@@ -66,9 +72,9 @@ const DashHeaderComponent = () => {
                 </button>
 
                 <div className='hidden md:flex lg:flex flex-row justify-end items-center w-[25%] gap-2'>
-                    <FaBell size={20} className='text-white cursor-pointer hover:text-orange-500' />
-                    <Link to="/" asChild>
-                        <CiLogout size={20} className='text-white cursor-pointer hover:text-orange-500' />
+                    <FaBell size={20} className='text-white cursor-pointer hover:text-orange-800' />
+                    <Link to="/">
+                        <CiLogout size={20} className='text-white cursor-pointer hover:text-orange-800' />
                     </Link>
                 </div>
             </header>
@@ -91,7 +97,13 @@ const DashHeaderComponent = () => {
                     {goHomeButton}
 
                     {links.company.map((link, i) => (
-                        <Link key={i} to={link.href} className="block px-3 py-2 rounded-md text-sm font-normal text-white hover:text-orange-500 cursor-pointer">
+                        <Link
+                            key={i}
+                            to={link.href}
+                            onClick={() => setIsSidebarOpen(false)}
+                            className={`flex flex-row px-1 py-2 rounded-md text-sm font-normal text-white ${pathname === link.href ? 'text-orange-500' : ''} hover:text-orange-800 cursor-pointer`}
+                        >
+                            {link.icon}
                             {link.label}
                         </Link>
                     ))}
@@ -99,13 +111,13 @@ const DashHeaderComponent = () => {
                     <div className='absolute bottom-5'>
                         <div className='flex flex-col gap-4'>
                             <div className='flex flex-row items-center gap-2'>
-                                <FaBell size={20} className='text-white cursor-pointer hover:text-orange-500' />
-                                <p className="text-sm font-normal text-white hover:text-orange-500 cursor-pointer">Notifications</p>
+                                <FaBell size={20} className='text-white cursor-pointer hover:text-orange-800' />
+                                <p className="text-sm font-normal text-white hover:text-orange-800 cursor-pointer">Notifications</p>
                             </div>
 
                             <Link to="/" className='flex flex-row gap-2'>
-                                <CiLogout size={20} className='text-white cursor-pointer hover:text-orange-500' />
-                                <p className="rounded-md text-sm font-normal text-white hover:text-orange-500 cursor-pointer">Logout</p>
+                                <CiLogout size={20} className='text-white cursor-pointer hover:text-orange-800' />
+                                <p className="rounded-md text-sm font-normal text-white hover:text-orange-800 cursor-pointer">Logout</p>
                             </Link>
                         </div>
                     </div>
