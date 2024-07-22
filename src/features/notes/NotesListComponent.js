@@ -6,12 +6,7 @@ import { useGetNotesQuery } from "./notesApiSlice";
 import Note from "./Note";
 import CardCounterComponent from '../../components/constant/CardCounterComponent';
 import LoadingContentComponent from '../../components/constant/LoadingContentComponent';
-
-const NoContentFoundComponent = () => (
-    <div className="text-center py-4">
-        <h2 className="text-2xl text-red-500">No Content Found</h2>
-    </div>
-);
+import NoContentFoundComponent from '../../components/constant/NoContentFoundComponent';
 
 const NotesListComponent = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -23,7 +18,11 @@ const NotesListComponent = () => {
         isSuccess,
         isError,
         error
-    } = useGetNotesQuery();
+    } = useGetNotesQuery(undefined, {
+        pollingInterval: 15000,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true
+    });
 
     const { totalNotes, openNotes, completedNotes } = useMemo(() => {
         if (isSuccess) {

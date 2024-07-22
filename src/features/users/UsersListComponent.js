@@ -19,7 +19,11 @@ const UsersListComponent = () => {
         isSuccess,
         isError,
         error
-    } = useGetUsersQuery();
+    } = useGetUsersQuery(undefined, {
+        pollingInterval: 60000,
+        refetchOnFocus: true,
+        refetchOnMountOrArgChange: true
+    });
 
     if (isLoading) return <LoadingContentComponent />;
     if (isError) return <p className="text-center text-red-500">{error?.data?.message}</p>;
