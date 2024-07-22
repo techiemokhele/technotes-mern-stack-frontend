@@ -16,7 +16,7 @@ const WelcomePage = () => {
                     <DashboardActionComponent
                         title="Add note"
                         description="Jot down ideas, make to-do lists"
-                        to={"/dash/notes"}
+                        to={"/dash/notes/new"}
                         backgroundImage={notesImage}
                     />
                 </div>
@@ -34,22 +34,20 @@ const WelcomePage = () => {
             <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-3 w-full gap-4">
                 <div className="w-full">
                     <DashboardActionComponent
-                        title="Employees"
+                        title="Create Employee"
+                        description="Add a new employee"
+                        to={"/dash/users/new"}
+                        backgroundImage={rolesImage}
+                    />
+                </div>
+                <div className="w-full">
+                    <DashboardActionComponent
+                        title="Manage Employees"
                         description="See list of registered users"
                         to={"/dash/users"}
                         backgroundImage={mechanicImage}
                     />
                 </div>
-
-                <div className="w-full">
-                    <DashboardActionComponent
-                        title="User Roles"
-                        description="Manage all user roles"
-                        to={"/dash/users"}
-                        backgroundImage={rolesImage}
-                    />
-                </div>
-
                 <div className="w-full">
                     <DashboardActionComponent
                         title="Settings"
