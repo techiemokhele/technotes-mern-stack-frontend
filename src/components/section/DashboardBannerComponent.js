@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import axios from 'axios';
-import { WiDaySunny, WiNightClear, WiCloud, WiRain } from 'react-icons/wi';
+// import axios from 'axios';
+// import { WiDaySunny, WiNightClear, WiCloud, WiRain } from 'react-icons/wi';
 import { MdDashboard } from "react-icons/md";
 
 import { dashboardPromo, welcomeBanner } from '../../data/imagesData';
 
 const DashboardBannerComponent = () => {
     const [greeting, setGreeting] = useState('');
-    const [weather, setWeather] = useState(null);
-    const [weatherIcon, setWeatherIcon] = useState(null);
+    // const [weather, setWeather] = useState(null);
+    // const [weatherIcon, setWeatherIcon] = useState(null);
     const [today, setToday] = useState('');
 
     const getGreeting = useCallback(() => {
@@ -24,41 +24,41 @@ const DashboardBannerComponent = () => {
         setToday(new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'short' }).format(date));
     }, []);
 
-    const getWeather = useCallback(async () => {
-        try {
-            const response = await axios.get('https://weather-api99.p.rapidapi.com/weather', {
-                params: { city: 'Springs, Gauteng' },
-                headers: {
-                    'X-RapidAPI-Key': process.env.REACT_APP_RAPIDAPI_WEATHER_KEY,
-                    'X-RapidAPI-Host': process.env.REACT_APP_RAPIDAPI_WEATHER_HOST
-                }
-            });
+    // const getWeather = useCallback(async () => {
+    //     try {
+    //         const response = await axios.get('https://weather-api99.p.rapidapi.com/weather', {
+    //             params: { city: 'Springs, Gauteng' },
+    //             headers: {
+    //                 'X-RapidAPI-Key': process.env.REACT_APP_RAPIDAPI_WEATHER_KEY,
+    //                 'X-RapidAPI-Host': process.env.REACT_APP_RAPIDAPI_WEATHER_HOST
+    //             }
+    //         });
 
-            setWeather(response.data);
+    //         setWeather(response.data);
 
-            if (response.data && response.data.weather && response.data.weather[0]) {
-                const condition = response.data.weather[0].main.toLowerCase();
-                const date = new Date();
-                const hours = date.getHours();
-                if (condition.includes('clear')) {
-                    setWeatherIcon(hours < 18 ? <WiDaySunny size={50} /> : <WiNightClear size={50} />);
-                } else if (condition.includes('cloud')) {
-                    setWeatherIcon(<WiCloud size={50} />);
-                } else if (condition.includes('rain')) {
-                    setWeatherIcon(<WiRain size={50} />);
-                }
-            } else {
-                console.error('Unexpected API response structure:', response.data);
-            }
-        } catch (error) {
-            console.error('Error fetching weather data:', error);
-        }
-    }, []);
+    //         if (response.data && response.data.weather && response.data.weather[0]) {
+    //             const condition = response.data.weather[0].main.toLowerCase();
+    //             const date = new Date();
+    //             const hours = date.getHours();
+    //             if (condition.includes('clear')) {
+    //                 setWeatherIcon(hours < 18 ? <WiDaySunny size={50} /> : <WiNightClear size={50} />);
+    //             } else if (condition.includes('cloud')) {
+    //                 setWeatherIcon(<WiCloud size={50} />);
+    //             } else if (condition.includes('rain')) {
+    //                 setWeatherIcon(<WiRain size={50} />);
+    //             }
+    //         } else {
+    //             console.error('Unexpected API response structure:', response.data);
+    //         }
+    //     } catch (error) {
+    //         console.error('Error fetching weather data:', error);
+    //     }
+    // }, []);
 
     useEffect(() => {
         getGreeting();
-        getWeather();
-    }, [getGreeting, getWeather]);
+        // getWeather();getWeather
+    }, [getGreeting,]);
 
     const backgroundStyle = {
         backgroundImage: `url(${dashboardPromo})`,
@@ -73,7 +73,7 @@ const DashboardBannerComponent = () => {
                 <div style={welcomeStyle} className="greeting-image flex flex-row items-center w-full bg-gray-800 rounded-md py-2 px-2">
                     <div>
                         <p className='text-sm md:text-xl lg:text-2xl font-bold'>{greeting}, Alex Smith!</p>
-                        {weather && (
+                        {/* {weather && (
                             <div className="flex items-center text-gray-500 text-smi py-2">
                                 <span className={`${greeting === "Good Morning" ? "text-yellow-400" : greeting === "Good Afternoon" ? "text-orange-500" : "text-white"}`}>{weatherIcon}</span>
                                 <span className='ml-2'>
@@ -85,7 +85,7 @@ const DashboardBannerComponent = () => {
                                         : ''}
                                 </span>
                             </div>
-                        )}
+                        )} */}
                         <p className='text-xs text-white'>{today}</p>
                     </div>
                 </div>

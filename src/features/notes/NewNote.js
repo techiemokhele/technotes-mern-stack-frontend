@@ -3,12 +3,12 @@ import { useSelector } from 'react-redux'
 import { selectAllUsers } from '../users/usersApiSlice'
 import NewNoteForm from './NewNoteForm'
 
-import LoadingContentComponent from '../../components/constant/LoadingContentComponent'
+import NoContentFoundComponent from '../../components/constant/NoContentFoundComponent'
 
 const NewNote = () => {
     const users = useSelector(selectAllUsers)
 
-    const content = users ? <NewNoteForm users={users} /> : <LoadingContentComponent />;
+    const content = !users?.length ? < NoContentFoundComponent /> : <NewNoteForm users={users} />;
 
     return content
 }
