@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
-const CustomTextInputComponent = ({ label, labelInfo, placeholder, id, name, type, value, onChange, className }) => {
+const CustomTextInputComponent = ({ label, labelInfo, placeholder, id, name, type, value, onChange, className, inputref }) => {
     const [showPassword, setShowPassword] = useState(false);
 
     const togglePasswordVisibility = () => {
@@ -23,6 +23,7 @@ const CustomTextInputComponent = ({ label, labelInfo, placeholder, id, name, typ
                 value={value}
                 onChange={onChange}
                 placeholder={placeholder}
+                inputref={inputref}
             />
             {type === "password" && (
                 <button

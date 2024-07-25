@@ -48,9 +48,7 @@ const DashHeaderComponent = () => {
     }, []);
 
     useEffect(() => {
-        if (isSuccess) {
-            navigate('/');
-        }
+        if (isSuccess) navigate('/')
     }, [isSuccess, navigate]);
 
     const onLogoutClicked = async () => {
@@ -58,7 +56,6 @@ const DashHeaderComponent = () => {
         await sendLogout().unwrap();
         navigate('/');
     };
-
 
     const onGoHomeClicked = () => (
         <Link to="/dash" className="flex flex-row px-1 py-2 rounded-md text-sm font-normal text-white hover:text-orange-800 cursor-pointer">
@@ -117,8 +114,7 @@ const DashHeaderComponent = () => {
 
             {/* Overlay */}
             <div
-                className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300 ease-in-out ${isSidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-                    }`}
+                className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300 ease-in-out ${isSidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
                 onClick={() => setIsSidebarOpen(false)}
             ></div>
 
@@ -150,6 +146,7 @@ const DashHeaderComponent = () => {
                                 <FaBell size={20} className='text-white cursor-pointer hover:text-orange-800' />
                                 <p className="text-sm font-normal text-white hover:text-orange-800 cursor-pointer">Notifications</p>
                             </div>
+
                             {logoutButton}
                         </div>
                     </div>

@@ -1,18 +1,22 @@
 import { useRef, useState, useEffect } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { MdCarRepair } from 'react-icons/md'
 
+import { useDispatch } from 'react-redux'
 import { setCredentials } from './authSlice'
 import { useLoginMutation } from './authApiSlice'
 
 import LoadingContentComponent from '../../components/constant/LoadingContentComponent'
+import CustomTextInputComponent from '../../components/form/CustomTextInputComponent'
+import CustomButtonComponent from '../../components/constant/CustomButtonComponent'
 
 const Login = () => {
-    const userRef = useRef()
-    const errRef = useRef()
+    const userRef = useRef(null)
+    const errRef = useRef(null)
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [showAlert, setShowAlert] = useState(false)
     const [errMsg, setErrMsg] = useState('')
 
     const navigate = useNavigate()
@@ -21,83 +25,115 @@ const Login = () => {
     const [login, { isLoading }] = useLoginMutation()
 
     useEffect(() => {
-        userRef.current.focus()
+        if (userRef.current) {
+            userRef.current.focus()
+        }
     }, [])
 
     useEffect(() => {
-        setErrMsg('');
+        setErrMsg('')
     }, [username, password])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        try {
-            const { accessToken } = await login({ username, password }).unwrap()
-            dispatch(setCredentials({ accessToken }))
-            setUsername('')
-            setPassword('')
-            navigate('/dash')
-        } catch (err) {
-            if (!err.status) {
-                setErrMsg('No Server Response');
-            } else if (err.status === 400) {
-                setErrMsg('Missing Username or Password');
-            } else if (err.status === 401) {
-                setErrMsg('Unauthorized');
-            } else {
-                setErrMsg(err.data?.message);
+        if (!username || !password) {
+            setErrMsg('Please fill out all fields before submitting.')
+            setShowAlert(true)
+        } else {
+            try {
+                const { accessToken } = await login({ username, password }).unwrap()
+                dispatch(setCredentials({ accessToken }))
+                setUsername('')
+                setPassword('')
+                navigate('/dash')
+                setShowAlert(true)
+            } catch (err) {
+                if (!err.status) {
+                    setErrMsg('No Server Response')
+                } else if (err.status === 400) {
+                    setErrMsg('Missing Username or Password')
+                } else if (err.status === 401) {
+                    setErrMsg('Unauthorized')
+                } else {
+                    setErrMsg(err.data?.message || 'An error occurred')
+                }
+                setShowAlert(true)
+                if (errRef.current) {
+                    errRef.current.focus()
+                }
+                setTimeout(() => setShowAlert(false), 3000)
             }
-            errRef.current.focus();
         }
     }
 
     const handleUserInput = (e) => setUsername(e.target.value)
     const handlePwdInput = (e) => setPassword(e.target.value)
 
-    const errClass = errMsg ? "errmsg" : "offscreen"
-
     if (isLoading) return <LoadingContentComponent />
 
-    const content = (
-        <section className="public">
-            <header>
-                <h1>Employee Login</h1>
-            </header>
+    return (
+        <main className="flex flex-col md:flex-row lg:flex-row w-full h-screen">
+            <div className="hidden md:block lg:block w-1/2">
+                <img
+                    src="https://images.unsplash.com/photo-1580014317999-e9f1936787a5?q=80&w=1227&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    alt="login-image"
+                    className="w-full h-full object-cover"
+                />
+            </div>
 
-            <main className="login">
-                <p ref={errRef} className={errClass} aria-live="assertive">{errMsg}</p>
+            <form className="flex flex-col justify-center px-10 w-full h-screen md:w-1/2 lg:w-1/2 bg-orange-900">
+                {showAlert && (
+                    <div ref={errRef} className={` ${errMsg ? "border-red-400 text-red-700 bg-red-100" : "border-green-400 text-green-700 bg-green-100"} border px-4 py-3 rounded relative mb-8`} role="alert">
+                        <span className="block sm:inline">{errMsg ? errMsg : "Signing you in..."}</span>
+                    </div>
+                )}
 
-                <form className="form" onSubmit={handleSubmit}>
-                    <label htmlFor="username">Username:</label>
-                    <input
-                        className="form__input"
-                        type="text"
-                        id="username"
-                        ref={userRef}
-                        value={username}
-                        onChange={handleUserInput}
-                        autoComplete="off"
-                        required
+                <div className="flex flex-row gap-2 justify-center items-center">
+                    <MdCarRepair size={32} className='text-orange-500' />
+                    <h1 className="text-white text-3xl lg:text-4xl">Neo M. Auto Repair</h1>
+                </div>
+
+                <div className="flex flex-col pt-6 justify-center items-center">
+                    <h4 className="text-white font-bold text-xl">Sign In to your account</h4>
+                    <p className="text-xs text-white">Enter your details to proceed further</p>
+                </div>
+
+                <div className="flex flex-col pt-6">
+                    <div className="flex flex-col w-full pb-6">
+                        <CustomTextInputComponent
+                            id="username"
+                            label={"Username"}
+                            labelInfo={""}
+                            name="username"
+                            type="text"
+                            placeholder="John"
+                            value={username}
+                            onChange={handleUserInput}
+                            inputref={userRef}
+                        />
+
+                        <CustomTextInputComponent
+                            id="password"
+                            label={"Password"}
+                            labelInfo={""}
+                            name="password"
+                            type="password"
+                            placeholder="●●●●●●●●"
+                            value={password}
+                            onChange={handlePwdInput}
+                        />
+                    </div>
+
+                    <CustomButtonComponent
+                        type="submit"
+                        text="Sign In"
+                        onClick={handleSubmit}
+                        outline={true}
                     />
-
-                    <label htmlFor="password">Password:</label>
-                    <input
-                        className="form__input"
-                        type="password"
-                        id="password"
-                        onChange={handlePwdInput}
-                        value={password}
-                        required
-                    />
-                    <button className="form__submit-button">Sign In</button>
-                </form>
-            </main>
-
-            <footer>
-                <Link to="/">Back to Home</Link>
-            </footer>
-        </section>
+                </div>
+            </form>
+        </main>
     )
-
-    return content
 }
+
 export default Login
