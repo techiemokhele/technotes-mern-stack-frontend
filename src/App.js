@@ -14,7 +14,7 @@ import EditUser from './features/users/EditUser'
 import NewUserForm from './features/users/NewUserForm'
 import EditNote from './features/notes/EditNote'
 import NewNote from './features/notes/NewNote'
-
+import PersistLogin from './features/auth/persistLogin'
 
 
 function App() {
@@ -24,21 +24,23 @@ function App() {
         <Route index element={<PublicComponent />} />
         <Route path="login" element={<Login />} />
 
-        <Route element={<Prefetch />}>
-          <Route path="dash" element={<DashLayoutComponent />}>
+        <Route element={<PersistLogin />}>
+          <Route element={<Prefetch />}>
+            <Route path="dash" element={<DashLayoutComponent />}>
 
-            <Route index element={<Welcome />} />
+              <Route index element={<Welcome />} />
 
-            <Route path="users">
-              <Route index element={<UsersListComponent />} />
-              <Route path=":id" element={<EditUser />} />
-              <Route path="new" element={<NewUserForm />} />
-            </Route>
+              <Route path="users">
+                <Route index element={<UsersListComponent />} />
+                <Route path=":id" element={<EditUser />} />
+                <Route path="new" element={<NewUserForm />} />
+              </Route>
 
-            <Route path="notes">
-              <Route index element={<NotesListComponent />} />
-              <Route path=":id" element={<EditNote />} />
-              <Route path="new" element={<NewNote />} />
+              <Route path="notes">
+                <Route index element={<NotesListComponent />} />
+                <Route path=":id" element={<EditNote />} />
+                <Route path="new" element={<NewNote />} />
+              </Route>
             </Route>
           </Route>
         </Route>
