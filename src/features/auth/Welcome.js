@@ -1,12 +1,13 @@
-
+import useAuth from "../../hooks/useAuth";
 
 import DashboardActionComponent from "../../components/section/DashboardActionComponent";
 import DashboardBannerComponent from "../../components/section/DashboardBannerComponent";
 
 import { mechanicImage, notesImage, rolesImage, settingImage, viewNotesImage } from "../../data/imagesData";
 
-
 const WelcomePage = () => {
+    const { isManager, isAdmin } = useAuth()
+
     return (
         <section className="welcome pt-10 md:pt-0 lg:pt-0">
             <DashboardBannerComponent />
@@ -32,22 +33,24 @@ const WelcomePage = () => {
             </div>
 
             <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-3 w-full gap-4">
-                <div className="w-full">
+                {(isManager || isAdmin) && <div className="w-full">
                     <DashboardActionComponent
                         title="Create Employee"
                         description="Add a new employee"
                         to={"/dash/users/new"}
                         backgroundImage={rolesImage}
                     />
-                </div>
-                <div className="w-full">
+                </div>}
+
+                {(isManager || isAdmin) && <div className="w-full">
                     <DashboardActionComponent
                         title="Manage Employees"
                         description="See list of registered users"
                         to={"/dash/users"}
                         backgroundImage={mechanicImage}
                     />
-                </div>
+                </div>}
+
                 <div className="w-full">
                     <DashboardActionComponent
                         title="Settings"

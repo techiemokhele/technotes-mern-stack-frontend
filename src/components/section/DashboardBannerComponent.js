@@ -3,6 +3,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 // import { WiDaySunny, WiNightClear, WiCloud, WiRain } from 'react-icons/wi';
 import { MdDashboard } from "react-icons/md";
 
+import useAuth from "../../hooks/useAuth";
 import { dashboardPromo, welcomeBanner } from '../../data/imagesData';
 
 const DashboardBannerComponent = () => {
@@ -10,6 +11,7 @@ const DashboardBannerComponent = () => {
     // const [weather, setWeather] = useState(null);
     // const [weatherIcon, setWeatherIcon] = useState(null);
     const [today, setToday] = useState('');
+    const { username } = useAuth()
 
     const getGreeting = useCallback(() => {
         const date = new Date();
@@ -72,7 +74,7 @@ const DashboardBannerComponent = () => {
             <div className="flex flex-row justify-between w-full gap-3">
                 <div style={welcomeStyle} className="greeting-image flex flex-row items-center w-full bg-gray-800 rounded-md py-2 px-2">
                     <div>
-                        <p className='text-sm md:text-xl lg:text-2xl font-bold'>{greeting}, Alex Smith!</p>
+                        <p className='text-sm md:text-xl lg:text-2xl font-bold'>{greeting}, {username}!</p>
                         {/* {weather && (
                             <div className="flex items-center text-gray-500 text-smi py-2">
                                 <span className={`${greeting === "Good Morning" ? "text-yellow-400" : greeting === "Good Afternoon" ? "text-orange-500" : "text-white"}`}>{weatherIcon}</span>
