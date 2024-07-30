@@ -17,11 +17,14 @@ export const authApiSlice = apiSlice.injectEndpoints({
             }),
             async onQueryStarted(arg, { dispatch, queryFulfilled }) {
                 try {
-                    console.log('Sending logout request');
-                    await queryFulfilled;
-                    console.log('Logout request fulfilled');
+                    const { data } = await queryFulfilled;
+                    console.log('Logout request fulfilled', data);
+
                     dispatch(logOut());
-                    dispatch(apiSlice.util.resetApiState());
+
+                    setTimeout(() => {
+                        dispatch(apiSlice.util.resetApiState());
+                    }, 1000)
                 } catch (err) {
                     console.log('Logout error', err);
                 }
