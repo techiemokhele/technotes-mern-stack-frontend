@@ -40,8 +40,8 @@ const WelcomeBannerComponent = () => {
             <div className='grid grid-cols-3 gap-4 w-full pt-10'>
                 <div className='flex flex-col justify-center h-20 px-4 items-start bg-gray-800 rounded-md hover:bg-orange-500 hover:text-white text-orange-500'>
                     <LiaBusinessTimeSolid className='text-white size-6' />
-                    <p className='uppercase text-[10px] pt-2'>we are open</p>
-                    <p className='uppercase text-md'>mon - sat 9:00 - 17:00</p>
+                    <p className='uppercase text-[10px] pt-2'>we are open weekdays</p>
+                    <p className='uppercase text-md'>9:00 - 17:00</p>
                 </div>
 
                 <div className='flex flex-col justify-center h-20 px-4 items-start bg-gray-800 rounded-md hover:bg-orange-500 hover:text-white text-orange-500'>
