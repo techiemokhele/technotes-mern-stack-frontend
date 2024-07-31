@@ -51,14 +51,14 @@ const WelcomePage = () => {
                     />
                 </div>}
 
-                <div className="w-full">
+                {(isManager || isAdmin) && <div className="w-full">
                     <DashboardActionComponent
                         title="Settings"
                         description="Change platform settings"
                         to={"/dash/users"}
                         backgroundImage={settingImage}
                     />
-                </div>
+                </div>}
             </div>
         </section >
     );
