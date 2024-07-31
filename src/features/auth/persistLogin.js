@@ -56,10 +56,14 @@ const PersistLogin = () => {
     } else if (isError) { //persist: yes, token: no
         console.log('error')
         content = (
-            <p className='errmsg'>
-                {error?.data?.message}
-                <Link to='/login'>Please login again</Link>.
-            </p>
+            <div className='flex flex-col h-screen justify-center items-center mx-28'>
+                <h1 className='text-white text-center text-xl'>
+                    {`${error?.data?.message} - `}
+                    Oops, seems like you are not authenticated to use the platform yet.
+                    Please contact your administrator or rather
+                </h1>
+                <Link to='/login' className='text-white bg-orange-500 px-4 py-2 rounded mt-6'>Please login again</Link>
+            </div>
         )
     } else if (isSuccess && trueSuccess) { //persist: yes, token: yes
         console.log('success')
