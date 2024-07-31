@@ -19,7 +19,7 @@ const UsersListComponent = () => {
         isSuccess,
         isError,
         error
-    } = useGetUsersQuery(undefined, {
+    } = useGetUsersQuery('userList', {
         pollingInterval: 60000,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true
@@ -44,12 +44,12 @@ const UsersListComponent = () => {
         const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
         return (
-            <div className="flex flex-col">
+            <div className="flex flex-col mx-auto container">
                 <div className='py-4'>
                     <h1 className="text-3xl">List of Employees</h1>
                 </div>
 
-                <div className="flex flex-row justify-between gap-4 pb-6 mx-6">
+                <div className="flex flex-row justify-between gap-4 pb-6">
                     <CardCounterComponent
                         type="total"
                         count={ids.length}

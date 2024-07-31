@@ -5,6 +5,7 @@ import { MdCarRepair } from 'react-icons/md'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from './authSlice'
 import { useLoginMutation } from './authApiSlice'
+import usePersist from '../../hooks/usePersist'
 
 import LoadingContentComponent from '../../components/constant/LoadingContentComponent'
 import CustomTextInputComponent from '../../components/form/CustomTextInputComponent'
@@ -18,6 +19,7 @@ const Login = () => {
     const [password, setPassword] = useState('')
     const [showAlert, setShowAlert] = useState(false)
     const [errMsg, setErrMsg] = useState('')
+    const [persist, setPersist] = usePersist()
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -68,6 +70,7 @@ const Login = () => {
 
     const handleUserInput = (e) => setUsername(e.target.value)
     const handlePwdInput = (e) => setPassword(e.target.value)
+    const handleToggle = () => setPersist(prev => !prev)
 
     if (isLoading) return <LoadingContentComponent />
 
@@ -122,6 +125,17 @@ const Login = () => {
                             value={password}
                             onChange={handlePwdInput}
                         />
+
+                        <label htmlFor="persist" className="px-2 flex items-center gap-2 text-sm">
+                            <input
+                                type="checkbox"
+                                id="persist"
+                                checked={persist}
+                                onChange={handleToggle}
+                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                            />
+                            Trust this device?
+                        </label>
                     </div>
 
                     <CustomButtonComponent
