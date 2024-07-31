@@ -6,6 +6,7 @@ import { MdCarRepair } from "react-icons/md";
 import { CiLogout } from "react-icons/ci";
 import { FaBell, FaHome, FaPlusCircle, FaClipboardList, FaUserPlus, FaUsers, FaCog } from 'react-icons/fa';
 
+import useAuth from '../../hooks/useAuth';
 import { useSendLogoutMutation } from '../../features/auth/authApiSlice';
 import { DASH_REGEX, NOTES_REGEX, USERS_REGEX } from '../../config/regex';
 
@@ -26,6 +27,7 @@ const pathRegexes = [
 ];
 
 const DashHeaderComponent = () => {
+    const { isManager, isAdmin } = useAuth()
     const { pathname } = useLocation();
     const navigate = useNavigate();
 
@@ -77,6 +79,13 @@ const DashHeaderComponent = () => {
         </button>
     );
 
+    const filteredLinks = links.company.filter(link => {
+        if (link.label === "Add User" || link.label === "View Users") {
+            return isAdmin || isManager;
+        }
+        return true;
+    });
+
     return (
         <>
             <header className={`flex flex-row justify-between w-full py-3 bg-gray-950 px-6 ${dashClass}`}>
@@ -90,7 +99,7 @@ const DashHeaderComponent = () => {
                 {/* Desktop Navigation */}
                 <nav className='hidden md:flex flex-row justify-center items-center w-[50%]'>
                     {goHomeButton}
-                    {links.company.map((link, i) => (
+                    {filteredLinks.map((link, i) => (
                         <Link
                             key={i}
                             to={link.href}
@@ -128,7 +137,7 @@ const DashHeaderComponent = () => {
 
                     {goHomeButton}
 
-                    {links.company.map((link, i) => (
+                    {filteredLinks.map((link, i) => (
                         <Link
                             key={i}
                             to={link.href}
