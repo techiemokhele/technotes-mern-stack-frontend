@@ -35,7 +35,7 @@ function App() {
 
                 <Route index element={<Welcome />} />
 
-                <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin]} />}>
+                <Route element={<RequireAuth allowedRoles={[ROLES.manager, ROLES.admin]} />}>
                   <Route path="users">
                     <Route index element={<UsersListComponent />} />
                     <Route path=":id" element={<EditUser />} />
