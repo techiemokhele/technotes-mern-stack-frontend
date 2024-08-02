@@ -1,7 +1,6 @@
 import { useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 
-import { selectUserById } from './usersApiSlice'
+import { useGetUsersQuery } from './usersApiSlice'
 
 import EditUserForm from './EditUserForm'
 import LoadingContentComponent from '../../components/constant/LoadingContentComponent'
@@ -9,10 +8,14 @@ import LoadingContentComponent from '../../components/constant/LoadingContentCom
 const EditUser = () => {
     const { id } = useParams()
 
-    const user = useSelector(state => selectUserById(state, id))
+    const { user } = useGetUsersQuery('usersList', {
+        selectFromResult: ({ data }) => ({
+            user: data?.entities[id]
+        })
+    })
 
-    const content = user ? <EditUserForm user={user} /> : <LoadingContentComponent />;
+    if (!user) { <LoadingContentComponent hasNoAccess={true} /> }
 
-    return content
+    return user && <EditUserForm user={user} />
 }
 export default EditUser

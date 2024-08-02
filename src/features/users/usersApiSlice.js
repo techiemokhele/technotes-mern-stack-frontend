@@ -1,22 +1,26 @@
-import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
-import { apiSlice } from "../../app/api/apiSlice";
+import { createSelector, createEntityAdapter } from '@reduxjs/toolkit'
+import { apiSlice } from '../../app/api/apiSlice'
 
-const usersAdapter = createEntityAdapter({});
+const usersAdapter = createEntityAdapter({
+    sortComparer: (a, b) => (a.completed === b.completed) ? 0 : a ? 1 : -1
+})
 
-const initialState = usersAdapter.getInitialState();
+const initialState = usersAdapter.getInitialState()
 
 export const usersApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getUsers: builder.query({
-            query: () => '/users',
-            validateStatus: (response, result) => {
-                return response.status === 200 && !result.isError
-            },
+            query: () => ({
+                url: '/users',
+                validateStatus: (response, result) => {
+                    return response.status === 200 && !result.isError
+                }
+            }),
             transformResponse: responseData => {
                 const loadedUsers = responseData.map(user => {
                     user.id = user._id
                     return user
-                });
+                })
                 return usersAdapter.setAll(initialState, loadedUsers)
             },
             providesTags: (result, error, arg) => {

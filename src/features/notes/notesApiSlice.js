@@ -1,24 +1,26 @@
-import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
-import { apiSlice } from "../../app/api/apiSlice";
+import { createSelector, createEntityAdapter } from '@reduxjs/toolkit'
+import { apiSlice } from '../../app/api/apiSlice'
 
 const notesAdapter = createEntityAdapter({
     sortComparer: (a, b) => (a.completed === b.completed) ? 0 : a ? 1 : -1
-});
+})
 
-const initialState = notesAdapter.getInitialState();
+const initialState = notesAdapter.getInitialState()
 
 export const notesApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
         getNotes: builder.query({
-            query: () => '/notes',
-            validateStatus: (response, result) => {
-                return response.status === 200 && !result.isError
-            },
+            query: () => ({
+                url: '/notes',
+                validateStatus: (response, result) => {
+                    return response.status === 200 && !result.isError
+                }
+            }),
             transformResponse: responseData => {
                 const loadedNotes = responseData.map(note => {
                     note.id = note._id
                     return note
-                });
+                })
                 return notesAdapter.setAll(initialState, loadedNotes)
             },
             providesTags: (result, error, arg) => {
@@ -39,7 +41,7 @@ export const notesApiSlice = apiSlice.injectEndpoints({
                 }
             }),
             invalidatesTags: [
-                { type: 'Note', id: "LIST" }
+                { type: 'Note', id: 'LIST' }
             ]
         }),
         updateNote: builder.mutation({

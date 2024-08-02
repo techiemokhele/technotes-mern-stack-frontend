@@ -1,71 +1,48 @@
-import { openImage, totalImage, userImage } from "../../data/imagesData";
+import { openImage, totalImage, userImage } from '../../data/imagesData'
 
 const CardCounterComponent = ({ type, count, description }) => {
-    const cardType = type;
-
     const handleCardType = () => {
-        switch (cardType) {
+        switch (type) {
             case 'total':
-                return 'Total';
-            case 'statusOpen':
-                return 'Opened';
-            case 'statusComplete':
-                return 'Completed';
+                return 'Total'
             case 'employeeRole':
-                return 'Employees';
+                return 'Employees'
             case 'managerRole':
-                return 'Managers';
+                return 'Managers'
+            case 'adminRole':
+                return 'Admins'
             default:
-                return 'Total';
+                return 'Total'
         }
     }
 
-    const handleCardCount = () => {
-        switch (cardType) {
-            case 'total':
-                return count;
-            case 'statusOpen':
-                return count;
-            case 'statusComplete':
-                return count;
-            case 'employeeRole':
-                return count;
-            case 'managerRole':
-                return count;
-            default:
-                return count;
-        }
-    }
+    const handleCardCount = () => count
 
     const handleCardImage = () => {
-        switch (cardType) {
+        switch (type) {
             case 'total':
-                return totalImage;
-            case 'statusOpen':
-                return openImage;
-            case 'statusComplete':
-                return openImage;
+                return totalImage
             case 'employeeRole':
-                return userImage;
+                return userImage
             case 'managerRole':
-                return openImage;
-            case 'shareholderRole':
-                return userImage;
+                return openImage
+            case 'adminRole':
+                return userImage
             default:
-                return openImage;
+                return openImage
         }
     }
 
     const welcomeStyle = {
         backgroundImage: `url(${handleCardImage()})`,
-    };
+    }
 
     return (
-        <div className="greeting-image flex flex-col w-full rounded-md py-2 px-6 gap-3 bg-gray-800" style={welcomeStyle}>
-            <p className="text-white font-bold text-3xl">{handleCardCount()}</p>
-            <div className="flex flex-col">
-                <p className="text-white font-bold">{handleCardType()}</p>
-                <p className="text-white text-[10px] font-normal">{description}</p>
+        <div className='greeting-image flex flex-col w-full rounded-md py-2 px-6 gap-3 bg-gray-800' style={welcomeStyle}>
+            <p className='text-white font-bold text-3xl'>{handleCardCount()}</p>
+            <div className='flex flex-col'>
+                <p className='text-white font-bold'>{handleCardType()}</p>
+                <p className='text-white text-[10px] font-normal'>{description}</p>
             </div>
         </div>
     )

@@ -7,7 +7,7 @@ const DashLayout = () => {
     return (
         <>
             <DashHeaderComponent />
-            <div className="dash-container">
+            <div className='dash-container'>
                 <Outlet />
             </div>
             <DashFooterComponent />

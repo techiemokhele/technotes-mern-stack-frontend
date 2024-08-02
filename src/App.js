@@ -22,31 +22,31 @@ import { ROLES } from './config/roles'
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<LayoutComponent />}>
+      <Route path='/' element={<LayoutComponent />}>
         {/* Public routes */}
         <Route index element={<PublicComponent />} />
-        <Route path="login" element={<Login />} />
+        <Route path='login' element={<Login />} />
 
         {/* Protected routes */}
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[...Object.values(ROLES)]} />}>
             <Route element={<Prefetch />}>
-              <Route path="dash" element={<DashLayoutComponent />}>
+              <Route path='dash' element={<DashLayoutComponent />}>
 
                 <Route index element={<Welcome />} />
 
                 <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin]} />}>
-                  <Route path="users">
+                  <Route path='users'>
                     <Route index element={<UsersListComponent />} />
-                    <Route path=":id" element={<EditUser />} />
-                    <Route path="new" element={<NewUserForm />} />
+                    <Route path=':id' element={<EditUser />} />
+                    <Route path='new' element={<NewUserForm />} />
                   </Route>
                 </Route>
 
-                <Route path="notes">
+                <Route path='notes'>
                   <Route index element={<NotesListComponent />} />
-                  <Route path=":id" element={<EditNote />} />
-                  <Route path="new" element={<NewNote />} />
+                  <Route path=':id' element={<EditNote />} />
+                  <Route path='new' element={<NewNote />} />
                 </Route>
               </Route>
             </Route>
@@ -55,7 +55,7 @@ function App() {
 
       </Route>
     </Routes>
-  );
+  )
 }
 
-export default App;
+export default App
