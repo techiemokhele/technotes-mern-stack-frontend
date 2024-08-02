@@ -32,7 +32,7 @@ const WelcomePage = () => {
                 </div>
             </div>
 
-            <div className='grid grid-cols-3 md:grid-cols-3 lg:grid-cols-3 w-full gap-4'>
+            <div className={`w-full gap-4 ${isAdmin || isManager ? 'grid grid-cols-3 md:grid-cols-3 lg:grid-cols-3' : 'flex flex-col'}`}>
                 {(isManager || isAdmin) && <div className='w-full'>
                     <DashboardActionComponent
                         title='Create Employee'
@@ -51,14 +51,14 @@ const WelcomePage = () => {
                     />
                 </div>}
 
-                {(isManager || isAdmin) && <div className='w-full'>
+                <div className='w-full'>
                     <DashboardActionComponent
                         title='Settings'
                         description='Change platform settings'
                         to={'/dash/settings'}
                         backgroundImage={settingImage}
                     />
-                </div>}
+                </div>
             </div>
         </section >
     )

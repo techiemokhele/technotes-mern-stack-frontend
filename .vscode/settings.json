@@ -1,3 +1,14 @@
 {
-  "cSpell.words": ["Displayer", "inputref", "Reauth", "reduxjs", "Regexes"]
+  "cSpell.words": [
+    "CARDCVV",
+    "CARDEXP",
+    "CARDNAME",
+    "CARDNO",
+    "Displayer",
+    "inputref",
+    "Reauth",
+    "reduxjs",
+    "Regexes",
+    "STRADD"
+  ]
 }
