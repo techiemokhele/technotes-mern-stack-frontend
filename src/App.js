@@ -1,8 +1,9 @@
 import { Routes, Route } from 'react-router-dom'
 
-import Login from './features/auth/Login'
+import Login from './features/auth/layout/Login'
 import Prefetch from './features/auth/Prefetch'
-import Welcome from './features/auth/Welcome'
+import Welcome from './features/auth/layout/Welcome'
+import Settings from './features/auth/layout/Settings'
 
 import LayoutComponent from './components/LayoutComponent'
 import PublicComponent from './components/PublicComponent'
@@ -34,6 +35,7 @@ function App() {
               <Route path='dash' element={<DashLayoutComponent />}>
 
                 <Route index element={<Welcome />} />
+                <Route path='settings' element={<Settings />} />
 
                 <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin]} />}>
                   <Route path='users'>

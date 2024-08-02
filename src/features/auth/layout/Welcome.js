@@ -1,9 +1,9 @@
-import useAuth from '../../hooks/useAuth'
+import useAuth from '../../../hooks/useAuth'
 
-import DashboardActionComponent from '../../components/section/DashboardActionComponent'
-import DashboardBannerComponent from '../../components/section/DashboardBannerComponent'
+import DashboardActionComponent from '../../../components/section/DashboardActionComponent'
+import DashboardBannerComponent from '../../../components/section/DashboardBannerComponent'
 
-import { mechanicImage, notesImage, rolesImage, settingImage, viewNotesImage } from '../../data/imagesData'
+import { mechanicImage, notesImage, rolesImage, settingImage, viewNotesImage } from '../../../data/imagesData'
 
 const WelcomePage = () => {
     const { isManager, isAdmin } = useAuth()
@@ -55,7 +55,7 @@ const WelcomePage = () => {
                     <DashboardActionComponent
                         title='Settings'
                         description='Change platform settings'
-                        to={'/dash/users'}
+                        to={'/dash/settings'}
                         backgroundImage={settingImage}
                     />
                 </div>}

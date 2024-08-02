@@ -16,7 +16,7 @@ const links = {
         { href: '/dash/notes', label: 'View Notes', icon: <FaClipboardList size={20} className='mr-2' /> },
         { href: '/dash/users/new', label: 'Add User', icon: <FaUserPlus size={20} className='mr-2' /> },
         { href: '/dash/users', label: 'View Users', icon: <FaUsers size={20} className='mr-2' /> },
-        { href: '#', label: 'Settings', icon: <FaCog size={20} className='mr-2' /> },
+        { href: '/dash/settings', label: 'Settings', icon: <FaCog size={20} className='mr-2' /> },
     ],
 }
 
