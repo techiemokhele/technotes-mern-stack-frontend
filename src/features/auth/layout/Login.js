@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom'
 import { MdCarRepair } from 'react-icons/md'
 
 import { useDispatch } from 'react-redux'
-import { setCredentials } from './authSlice'
-import { useLoginMutation } from './authApiSlice'
-import usePersist from '../../hooks/usePersist'
+import { setCredentials } from '../authSlice'
+import { useLoginMutation } from '../authApiSlice'
+import usePersist from '../../../hooks/usePersist'
 
-import LoadingContentComponent from '../../components/constant/LoadingContentComponent'
-import CustomTextInputComponent from '../../components/form/CustomTextInputComponent'
-import CustomButtonComponent from '../../components/constant/CustomButtonComponent'
+import LoadingContentComponent from '../../../components/constant/LoadingContentComponent'
+import CustomTextInputComponent from '../../../components/form/CustomTextInputComponent'
+import CustomButtonComponent from '../../../components/constant/CustomButtonComponent'
 
 const Login = () => {
     const userRef = useRef(null)
