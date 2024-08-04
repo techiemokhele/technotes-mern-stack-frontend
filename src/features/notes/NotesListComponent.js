@@ -47,6 +47,9 @@ const NotesListComponent = () => {
                 filteredIds = ids.filter(noteId => entities[noteId].username === username)
             }
 
+            // Reverse order to display newest notes first
+            filteredIds.reverse()
+
             // Calculate note counts
             let open = 0
             let completed = 0
@@ -63,7 +66,7 @@ const NotesListComponent = () => {
             const totalPages = Math.ceil(totalNotes / itemsPerPage)
             const indexOfLastItem = currentPage * itemsPerPage
             const indexOfFirstItem = indexOfLastItem - itemsPerPage
-            const currentItems = filteredIds.slice(indexOfFirstItem, indexOfLastItem).reverse()
+            const currentItems = filteredIds.slice(indexOfFirstItem, indexOfLastItem)
 
             return {
                 totalNotes,
@@ -167,7 +170,7 @@ const NotesListComponent = () => {
                                 <button
                                     onClick={() => paginate(currentPage - 1)}
                                     disabled={currentPage === 1}
-                                    className='relative inline-flex items-center px-2 py-2 rounded-l-md border border-orange-500 bg-orange-500 text-sm font-medium text-white hover:bg-gray-50'
+                                    className='relative inline-flex items-center px-2 py-2 rounded-l-md border border-orange-500 bg-orange-500 text-sm font-medium text-white hover:bg-orange-800'
                                 >
                                     <span className='sr-only'>Previous</span>
                                     <FontAwesomeIcon icon={faChevronLeft} className='h-5 w-5' aria-hidden='true' />
@@ -190,7 +193,7 @@ const NotesListComponent = () => {
                                 <button
                                     onClick={() => paginate(currentPage + 1)}
                                     disabled={currentPage === totalPages}
-                                    className='relative inline-flex items-center px-2 py-2 rounded-r-md border border-orange-500 bg-orange-500 text-sm font-medium text-white hover:bg-gray-50'
+                                    className='relative inline-flex items-center px-2 py-2 rounded-r-md border border-orange-500 bg-orange-500 text-sm font-medium text-white hover:bg-orange-800'
                                 >
                                     <span className='sr-only'>Next</span>
                                     <FontAwesomeIcon icon={faChevronRight} className='h-5 w-5' aria-hidden='true' />
