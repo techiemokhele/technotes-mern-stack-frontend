@@ -5,19 +5,19 @@ import CustomTextInputComponent from '../form/CustomTextInputComponent'
 import CustomButtonComponent from '../constant/CustomButtonComponent'
 import { CARDCVV_REGEX, CARDEXP_REGEX, CARDNAME_REGEX, CARDNO_REGEX, CITY_REGEX, CODE_REGEX, COUNTRY_REGEX, EMAIL_REGEX, PROVINCE_REGEX, STRADD_REGEX } from '../../config/regex'
 
-const PaymentFormComponent = () => {
+const PaymentFormComponent = ({ user }) => {
     const navigate = useNavigate()
 
-    const [cardName, setCardName] = useState('')
-    const [cardExp, setCardExp] = useState('')
-    const [cardNo, setCardNo] = useState('')
-    const [cardCvv, setCardCvv] = useState('')
-    const [email, setEmail] = useState('')
-    const [strAdd, setStrAdd] = useState('')
-    const [city, setCity] = useState('')
-    const [province, setProvince] = useState('')
-    const [code, setCode] = useState('')
-    const [country, setCountry] = useState('')
+    const [cardName, setCardName] = useState(user?.cardName || '');
+    const [cardExp, setCardExp] = useState(user?.cardExp || '');
+    const [cardNo, setCardNo] = useState(user?.cardNo || '');
+    const [cardCvv, setCardCvv] = useState(user?.cardCvv || '');
+    const [email, setEmail] = useState(user?.email || '');
+    const [strAdd, setStrAdd] = useState(user?.address || '');
+    const [city, setCity] = useState(user?.city || '');
+    const [province, setProvince] = useState(user?.province || '');
+    const [code, setCode] = useState(user?.code || '');
+    const [country, setCountry] = useState(user?.country || '');
     const [alertMessage, setAlertMessage] = useState('')
     const [alertType, setAlertType] = useState('')
     const [isLoading, setIsLoading] = useState(false)

@@ -1,26 +1,36 @@
 import React, { useState } from 'react'
 import { FaCcMastercard } from "react-icons/fa"
-import { FaUserTie } from "react-icons/fa6"
+import { GiTakeMyMoney } from "react-icons/gi";
 
 import useAuth from '../../../hooks/useAuth'
-import DetailsComponent from '../../../components/section/DetailsComponent'
+import BillingComponent from '../../../components/section/BillingComponent'
 import PaymentComponent from '../../../components/section/PaymentComponent'
+import { useGetUsersQuery } from '../../users/usersApiSlice'
+import { useParams } from 'react-router-dom'
 
 const Settings = () => {
+    const { id } = useParams()
+
+    const { user } = useGetUsersQuery('usersList', {
+        selectFromResult: ({ data }) => ({
+            user: data?.entities[id]
+        })
+    })
+
     const { isManager, isAdmin } = useAuth()
 
-    const [details, setDetails] = useState(true)
+    const [billing, setBilling] = useState(true)
     const [paymentDetails, setPaymentDetails] = useState(false)
     const [isActive, setIsActive] = useState(false)
 
     const myDetails = () => {
-        setDetails(true)
+        setBilling(true)
         setPaymentDetails(false)
         setIsActive(!isActive)
     }
 
     const myPaymentDetails = () => {
-        setDetails(false)
+        setBilling(false)
         setPaymentDetails(true)
         setIsActive(!isActive)
     }
@@ -30,22 +40,23 @@ const Settings = () => {
             <h1 className='text-white text-4xl'>Settings</h1>
 
             <div className='flex flex-row justify-center items-center gap-2 pt-6 pb-6'>
-                <div onClick={myDetails} className={`${details ? " bg-orange-500" : "bg-transparent"} cursor-pointer rounded flex flex-row justify-center items-center py-2 px-4 gap-2`}>
-                    <FaUserTie />
-                    <p className='text-white text-xs'>Personal details</p>
+                <div onClick={myDetails} className={`${billing ? "bg-orange-500" : "bg-transparent"} cursor-pointer rounded flex flex-row justify-center items-center py-2 px-4 gap-2`}>
+                    <GiTakeMyMoney />
+                    <p className='text-white text-xs'>Plans and billing</p>
                 </div>
 
                 {isManager || isAdmin ? (
-                    <div onClick={myPaymentDetails} className={`${paymentDetails ? " bg-orange-500" : "bg-transparent"} cursor-pointer rounded flex flex-row justify-center items-center py-2 px-4 gap-2`}>
+                    <div onClick={myPaymentDetails} className={`${paymentDetails ? "bg-orange-500" : "bg-transparent"} cursor-pointer rounded flex flex-row justify-center items-center py-2 px-4 gap-2`}>
                         <FaCcMastercard />
                         <p className='text-white text-xs'>Payment Details</p>
                     </div>
                 ) : null}
             </div>
 
-            {details ? <DetailsComponent /> : <PaymentComponent />}
+            {billing ? <BillingComponent /> : <PaymentComponent user={user} />}
         </section>
     )
 }
+
 
 export default Settings
