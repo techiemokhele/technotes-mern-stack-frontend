@@ -1,6 +1,8 @@
 import React from 'react'
 import { GiTakeMyMoney } from "react-icons/gi";
+
 import BillingPlanComponent from './BillingPlanComponent'
+import BillingHistoryComponent from './BillingHistoryComponent';
 
 const BillingComponent = () => {
     return (
@@ -14,6 +16,10 @@ const BillingComponent = () => {
             <div className='border-b-[1px] border-gray-200 w-full my-4'></div>
 
             <BillingPlanComponent />
+
+            <div className='border-b-[1px] border-gray-200 w-full my-4'></div>
+
+            <BillingHistoryComponent />
         </section>
     )
 }
