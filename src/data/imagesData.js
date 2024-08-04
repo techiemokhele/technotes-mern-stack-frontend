@@ -12,6 +12,9 @@ const userImage = require('../img/user-bg.png')
 const loadingImage = require('../img/loading.webp')
 const noAccessImage = require('../img/no-access.png')
 const noContentImage = require('../img/no-content.webp')
+const visa = require('../img/icons/visa-logo.png')
+const masterCard = require('../img/icons/mastercard-logo.png')
+const paypal = require('../img/icons/paypal-logo.png')
 
 export {
     notesImage,
@@ -26,5 +29,8 @@ export {
     userImage,
     loadingImage,
     noAccessImage,
-    noContentImage
+    noContentImage,
+    visa,
+    masterCard,
+    paypal
 }
