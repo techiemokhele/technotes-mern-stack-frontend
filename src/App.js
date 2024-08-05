@@ -5,6 +5,7 @@ import Prefetch from './features/auth/Prefetch'
 import Welcome from './features/auth/layout/Welcome'
 import BillDetails from './features/auth/layout/BillDetails'
 import Settings from './features/auth/layout/Settings'
+import ContactUs from './features/auth/layout/ContactUs'
 
 import LayoutComponent from './components/LayoutComponent'
 import PublicComponent from './components/PublicComponent'
@@ -28,6 +29,7 @@ function App() {
         {/* Public routes */}
         <Route index element={<PublicComponent />} />
         <Route path='login' element={<Login />} />
+        <Route path='contact-us' element={<ContactUs />} />
 
         {/* Protected routes */}
         <Route element={<PersistLogin />}>

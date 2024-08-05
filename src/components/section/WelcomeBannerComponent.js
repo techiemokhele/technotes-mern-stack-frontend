@@ -24,7 +24,7 @@ const WelcomeBannerComponent = () => {
             <div className='w-1/2 flex flex-row gap-4'>
                 <CustomButtonComponent
                     text='Contact Support'
-                    onClick={() => handleNavigation('/contact-support')}
+                    onClick={() => handleNavigation('/contact-us')}
                     outline={true}
                     type='button'
                 />
