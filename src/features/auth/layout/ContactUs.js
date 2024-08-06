@@ -1,10 +1,10 @@
 import React from 'react'
-import { IoLogoWhatsapp } from "react-icons/io"
-import { MdAttachEmail } from "react-icons/md"
-import { FaSquareXTwitter } from "react-icons/fa6"
-import { FaFacebookSquare } from "react-icons/fa"
-import { FaPhoneVolume } from "react-icons/fa"
-import { FaMapLocationDot } from "react-icons/fa6"
+import { IoLogoWhatsapp } from 'react-icons/io'
+import { MdAttachEmail } from 'react-icons/md'
+import { FaSquareXTwitter } from 'react-icons/fa6'
+import { FaFacebookSquare } from 'react-icons/fa'
+import { FaPhoneVolume } from 'react-icons/fa'
+import { FaMapLocationDot } from 'react-icons/fa6'
 
 import ContactUsFormComponent from '../../../components/section/ContactUsFormComponent'
 
@@ -15,19 +15,19 @@ const ContactUs = () => {
                 <h1 className='text-white text-4xl'>Contact our team</h1>
 
                 <div className='flex flex-col leading-none justify-center items-center py-6'>
-                    <p className='text-white text-xs'>Got any question about the product? We're here to help.</p>
-                    <p className='text-white text-xs'>Chat to our friendly team on weekdays from 8am to 5pm and response in less than an hour.</p>
+                    <p className='text-white text-xs text-center'>Got any question about the product? We're here to help.</p>
+                    <p className='text-white text-xs text-center'>Chat to our friendly team on weekdays from 8am to 5pm and response in less than an hour.</p>
                 </div>
             </div>
 
-            <div className='w-full flex flex-col md:flex-row lg:flex-row'>
+            <div className='w-full flex flex-col-reverse md:flex-row lg:flex-row gap-0 md:gap-6 lg:gap-6'>
                 {/* contact form */}
-                <div className='w-1/2'>
+                <div className='w-full md:w-1/2 lg:w-1/2 px-10'>
                     <ContactUsFormComponent />
                 </div>
 
                 {/* contact details */}
-                <div className='w-1/3 flex flex-col gap-4'>
+                <div className='hidden md:block lg:block w-full md:w-2/6 lg:w-2/6 flex-col gap-4'>
                     <div className='w-full flex flex-col'>
                         <h4 className='text-white text-xl'>Chat with us</h4>
                         <p className='text-white text-xs pb-4'>Speak to our friendly team via live chat.</p>
@@ -58,7 +58,7 @@ const ContactUs = () => {
                         </div>
                     </div>
 
-                    <div className='w-full flex flex-col'>
+                    <div className='w-full flex flex-col pt-4'>
                         <h4 className='text-white text-xl'>Call us</h4>
                         <p className='text-white text-xs pb-4'>Call our team weekdays from 8am to 5pm.</p>
 
@@ -70,7 +70,7 @@ const ContactUs = () => {
                         </div>
                     </div>
 
-                    <div className='w-full flex flex-col'>
+                    <div className='w-full flex flex-col pt-4'>
                         <h4 className='text-white text-xl'>Visit us</h4>
                         <p className='text-white text-xs pb-4'>Chat to us in person at our Gauteng HQ.</p>
 
